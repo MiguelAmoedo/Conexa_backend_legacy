@@ -23,13 +23,14 @@ exports.getClienteById = async (req, res) => {
 
 exports.createCliente = async (req, res) => {
   try {
-    const { cpf, nome, endereco, telefone, email } = req.body;
+    const { cpf, nome, endereco, telefone, email, senha } = req.body;
     const cliente = new Cliente({
       cpf,
       nome,
       endereco,
       telefone,
       email,
+      senha
     });
     await cliente.save();
     res.status(201).json(cliente);
@@ -40,7 +41,7 @@ exports.createCliente = async (req, res) => {
 
 exports.updateCliente = async (req, res) => {
   try {
-    const { cpf, nome, endereco, telefone, email } = req.body;
+    const { cpf, nome, endereco, telefone, email, senha } = req.body;
     const cliente = await Cliente.findByIdAndUpdate(
       req.params.id,
       {
@@ -49,6 +50,7 @@ exports.updateCliente = async (req, res) => {
         endereco,
         telefone,
         email,
+        senha
       },
       { new: true }
     );

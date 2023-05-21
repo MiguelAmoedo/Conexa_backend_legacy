@@ -13,7 +13,15 @@ const vendedorSchema = new mongoose.Schema({
   endereco: { type: String, required: true },
   telefone: { type: String, required: true },
   dataCadastro: { type: Date, required: true, default: Date.now },
-  status: { type: String, required: true, enum: ['Ativo', 'Inativo'], default: 'Ativo' }
+  status: { type: String, required: true, enum: ['Ativo', 'Inativo'], default: 'Ativo' },
+  token: {
+    type: String 
+    },
+  numeroSeguranca: {
+    type: String 
+    }
+  
+
 });
 
 const Vendedor = mongoose.model('Vendedores', vendedorSchema);

@@ -13,7 +13,10 @@ const ClienteSchema = new Schema({
   email: {
     type: String,
     required: true,
-    
+  },
+  senha: {
+    type: String,
+    required: true,
   },
 
   cpf: {
@@ -33,7 +36,13 @@ const ClienteSchema = new Schema({
     type: Date,
     required: true,
     default: Date.now()
-  }
+  },
+  token: {
+    type: String 
+    },
+  numeroSeguranca: {
+    type: String 
+    }
   
   
   
