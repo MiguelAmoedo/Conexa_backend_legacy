@@ -19,7 +19,7 @@ exports.adicionarItemCarrinho = async (req, res) => {
     }
 
     // Verifica se a peça está disponível em estoque
-    if (peca.qtdEstoque < quantidade) {
+    if (peca.qtdEstoque <= quantidade) {
       return res.status(400).json({ message: 'Quantidade solicitada excede o estoque disponível' });
     }
 
