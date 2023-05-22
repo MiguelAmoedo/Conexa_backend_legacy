@@ -1,0 +1,36 @@
+
+
+LOGIN E TOKEN
+post - http://localhost:5000/login/validarToken
+post - http://localhost:5000/login/vendedor
+post - http://localhost:5000/login/cliente
+
+COMPRAS
+get- http://localhost:5000/compras/
+post - http://localhost:5000/compras/carrinho
+del- http://localhost:5000/compras/carrinho/(id)
+post - http://localhost:5000/compras/finalizar/646a1a195d1122a0c59be727
+get- http://localhost:5000/compras/646a1a195d1122a0c59be727
+put - http://localhost:5000/compras/cancelar/646a1aec430311b306945fb0
+
+PEÇAS
+get- http://localhost:5000/pecas
+get- http://localhost:5000/pecas/(id)
+post - http://localhost:5000/pecas
+put - http://localhost:5000/pecas/(id
+del - http://localhost:5000/pecas/(id)
+
+VENDEDORES
+get- http://localhost:5000/vendedores
+post - http://localhost:5000/vendedores
+get - http://localhost:5000/vendedores/6469539f04b657575225ba91
+put - http://localhost:5000/vendedores/(id)
+del - http://localhost:5000/vendedores/(id)
+
+CLIENTES
+get- http://localhost:5000/clientes
+get - http://localhost:5000/clientes/(id)
+del - http://localhost:5000/clientes/(id)
+put - http://localhost:5000/clientes/(id)
+post - http://localhost:5000/clientes
+get - http://localhost:5000/clientes/cpf/(cpf)
