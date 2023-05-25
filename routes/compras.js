@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const CompraController = require('../controllers/compraControllers');
 
-
 // Rota para adicionar um item ao carrinho de compras
 router.post('/carrinho', CompraController.adicionarItemCarrinho);
 
@@ -18,8 +17,7 @@ router.get('/:compraId', CompraController.obterDetalhesCompra);
 // Rota para cancelar uma compra em andamento
 router.put('/cancelar/:compraId', CompraController.cancelarCompra);
 
-// Rota para cancelar uma compra em andamento
+// Rota para obter todas as compras
 router.get('/', CompraController.getAllCompras);
-
 
 module.exports = router;

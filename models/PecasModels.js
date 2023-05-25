@@ -1,18 +1,22 @@
 const mongoose = require('mongoose');
-
+const MovimentacaoEstoque  = require('./transacaoModels')
 mongoose.connect('mongodb://127.0.0.1/Autoconnectxs', { useNewUrlParser: true });
 
 const Schema = mongoose.Schema;
 
 const pecaSchema = new Schema({
   nome: { type: String, required: true },
-  marca: { type: String, required: true},
+  marca: { type: String, required: true },
   modelo: { type: String, required: true },
   ano: { type: Number, required: true },
   descricao: { type: String, required: true },
   preco: { type: Number, required: true },
-  qtdEstoque: { type: Number, required: true },
-  status: { type: String, required: true },
+  qtdEstoque: { type: Number, required: true, min: 0 }, 
+  status: {
+    type: String,
+    enum: ['Disponivel', 'Vendida', 'Manutenção'], 
+    required: true,
+  },
   idVendedor: {
     type: Schema.Types.ObjectId,
     ref: 'Vendedor',
@@ -28,15 +32,11 @@ const pecaSchema = new Schema({
       'Molas',
       'Disco de freio',
       'Radiador',
-      'carroceria'
+      'carroceria',
     ],
-    required: true
-  }
+    required: true,
+  },
 });
-
-
-
-
 
 const Peca = mongoose.model('Peca', pecaSchema);
 

@@ -11,6 +11,7 @@ var pecasRouter = require('./routes/pecas');
 var buscaPecaRouter =  require('./routes/buscapeca');
 var loginRouter = require('./routes/login')
 var comprasRouter = require('./routes/compras')
+var adminRouter = require('./routes/admin')
 
 var app = express();
 
@@ -32,8 +33,9 @@ app.use('/clientes', clientesRouter);
 app.use('/vendedores', vendedoresRouter);
 app.use('/pecas', pecasRouter);
 app.use('/buscapeca', buscaPecaRouter);
-app.use('/login', loginRouter);
+app.use('/login', loginRouter);//=
 app.use('/compras', comprasRouter);
+app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

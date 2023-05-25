@@ -1,89 +1,153 @@
+
 const Peca = require('../models/PecasModels');
-const Vendedor = require('../models/VendedorModels.js');
+const Vendedor = require('../models/VendedorModels');
 
-// Listar todas as peças
-exports.listarPecas = async (req, res) => {
+exports.addPeca = async (req, res) => {
   try {
-    const pecas = await Peca.find();
-    res.json(pecas);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+    const vendedorId = req.userId; // ID do vendedor logado
+    const { nome, descricao, preco, quantidade } = req.body;
 
-// Obter uma peça por ID
-exports.obterPecaPorId = async (req, res) => {
-  try {
-    const peca = await Peca.findById(req.params.id);
-    if (!peca) {
-      return res.status(404).json({ message: 'Peça não encontrada' });
-    }
-    res.json(peca);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+    const vendedor = await Vendedor.findById(vendedorId);
 
-// Criar uma nova peça
-exports.criarPeca = async (req, res) => {
-  try {
-    // Verificar se o vendedor associado à peça existe
-    const vendedor = await Vendedor.findById(req.body.idVendedor);
     if (!vendedor) {
-      return res.status(400).json({ message: 'Vendedor associado à peça não encontrado' });
+      return res.status(404).json({ message: 'Vendedor não encontrado' });
     }
 
-    // Criar a nova peça e salvá-la no banco de dados
-    const novaPeca = new Peca(req.body);
-    await novaPeca.save();
+    const peca = new Peca({
+      nome,
+      descricao,
+      preco,
+      quantidade,
+      vendedor: vendedorId,
+    });
 
-    res.status(201).json(novaPeca);
+    const newPeca = await peca.save();
+    res.status(201).json(newPeca);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 };
 
-// Atualizar uma peça existente
-exports.atualizarPeca = async (req, res) => {
+exports.updatePeca = async (req, res) => {
   try {
-    const id = req.params.id;
+    const vendedorId = req.userId; // ID do vendedor logado
+    const pecaId = req.params.id;
+    const { nome, descricao, preco, quantidade } = req.body;
 
-    // Verificar se a peça existe
-    const peca = await Peca.findById(id);
+    const vendedor = await Vendedor.findById(vendedorId);
+
+    if (!vendedor) {
+      return res.status(404).json({ message: 'Vendedor não encontrado' });
+    }
+
+    const peca = await Peca.findOneAndUpdate(
+      { _id: pecaId, vendedor: vendedorId },
+      { nome, descricao, preco, quantidade },
+      { new: true }
+    );
+
     if (!peca) {
       return res.status(404).json({ message: 'Peça não encontrada' });
     }
 
-    // Verificar se o vendedor associado à peça existe
-    const vendedor = await Vendedor.findById(req.body.idVendedor);
-    if (!vendedor) {
-      return res.status(400).json({ message: 'Vendedor associado à peça não encontrado' });
-    }
-
-    // Atualizar a peça e salvá-la no banco de dados
-    const pecaAtualizada = await Peca.findByIdAndUpdate(id, req.body, { new: true });
-
-    res.status(200).json(pecaAtualizada);
+    res.status(200).json(peca);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 };
 
-// Excluir uma peça existente
-exports.excluirPeca = async (req, res) => {
+exports.deletePeca = async (req, res) => {
   try {
-    const id = req.params.id;
+    const vendedorId = req.userId; // ID do vendedor logado
+    const pecaId = req.params.id;
 
-    // Verificar se a peça existe
-    const peca = await Peca.findById(id);
-    if (!peca) {
+    const vendedor = await Vendedor.findById(vendedorId);
+
+    if (!vendedor) {
+      return res.status(404).json({ message: 'Vendedor não encontrado' });
+    }
+
+    const deletedPeca = await Peca.findOneAndDelete({ _id: pecaId, vendedor: vendedorId });
+
+    if (!deletedPeca) {
       return res.status(404).json({ message: 'Peça não encontrada' });
     }
 
-    // Excluir a peça do banco de dados
-    await Peca.findByIdAndDelete(id);
+    res.status(200).json({ message: 'Peça excluída com sucesso' });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
 
-    res.status(204).json();
+
+exports.getEstoque = async (req, res) => {
+  try {
+    const vendedorId = req.userId; // ID do vendedor logado
+
+    const vendedor = await Vendedor.findById(vendedorId);
+
+    if (!vendedor) {
+      return res.status(404).json({ message: 'Vendedor não encontrado' });
+    }
+
+    const estoque = await Peca.find({ vendedor: vendedorId });
+
+    // Consulta para obter a quantidade disponível de um produto específico
+    const getQuantidadeDisponivel = async (pecaId) => {
+      const peca = await Peca.findById(pecaId);
+      return peca.quantidade;
+    };
+
+    // Consulta para listar produtos com estoque baixo (quantidade abaixo de um limite pré-definido)
+    const limiteEstoqueBaixo = 10; // Defina o limite de estoque baixo conforme necessário
+    const produtosEstoqueBaixo = await Peca.find({
+      vendedor: vendedorId,
+      quantidade: { $lt: limiteEstoqueBaixo },
+    });
+
+    // Consulta para listar produtos mais vendidos (ordenados pela quantidade vendida em ordem decrescente)
+    const produtosMaisVendidos = await Peca.find({ vendedor: vendedorId })
+      .sort('-quantidadeVendida')
+      .limit(10); // Defina o número de produtos mais vendidos que deseja retornar
+
+    // Consulta para obter histórico de vendas de um produto específico
+    const getHistoricoVendas = async (pecaId) => {
+      const historicoVendas = await Venda.find({ peca: pecaId });
+      return historicoVendas;
+    };
+
+    const estoqueComDetalhes = await Promise.all(
+      estoque.map(async (peca) => {
+        const limiteEstoqueBaixo = 10; // Defina o limite de estoque baixo conforme necessário
+        const produtosEstoqueBaixo = await Peca.find({
+        vendedor: vendedorId,
+        quantidade: { $lt: limiteEstoqueBaixo },
+        });
+        const produtosMaisVendidos = await Peca.find({ vendedor: vendedorId })
+        .sort('-quantidadeVendida')
+        .limit(10); // Defina o número de produtos mais vendidos que deseja retornar
+
+
+        const quantidadeDisponivel = await getQuantidadeDisponivel(peca._id);
+        const historicoVendas = await getHistoricoVendas(peca._id);
+
+        return {
+          _id: peca._id,
+          nome: peca.nome,
+          descricao: peca.descricao,
+          preco: peca.preco,
+          quantidade: peca.quantidade,
+          quantidadeDisponivel,
+          historicoVendas,
+        };
+      })
+    );
+
+    res.status(200).json({
+      estoque: estoqueComDetalhes,
+      produtosEstoqueBaixo,
+      produtosMaisVendidos,
+    });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

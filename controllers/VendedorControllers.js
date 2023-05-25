@@ -1,92 +1,146 @@
-const Vendedor = require('../models/VendedorModels')
+const Vendedor = require('../models/VendedorModels');
+const bcrypt = require('bcryptjs');
+const { generateToken } = require('../auth/auth');
+const Peca = require('../models/PecasModels');
 
-exports.getVendedores = async (req, res) => {
+exports.addPeca = async (req, res) => {
   try {
-    const vendedor = await Vendedor.find();
-    res.status(200).json(vendedor);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-exports.getVendedorById = async (req, res) => {
-  try {
-    const vendedor = await Vendedor.findById(req.params.id);
+    const vendedorId = req.userId; // ID do vendedor logado
+    const { nome, descricao, preco, quantidade } = req.body;
+
+    const vendedor = await Vendedor.findById(vendedorId);
+
     if (!vendedor) {
       return res.status(404).json({ message: 'Vendedor não encontrado' });
     }
-    res.status(200).json(vendedor);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-}
 
-exports.createVendedor = async (req, res) => {
-  try {
-    const { nome, email, senha, cnpj, endereco, telefone, dataCadastro, status } = req.body;
-
-    // Validações dos campos obrigatórios
-    if (!nome || !email || !senha || !cnpj || !endereco || !telefone || !dataCadastro || !status) {
-      return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
-    }
-
-    const vendedor = new Vendedor({
+    const peca = new Peca({
       nome,
-      email,
-      senha,
-      cnpj,
-      endereco,
-      telefone,
-      dataCadastro,
-      status
+      descricao,
+      preco,
+      quantidade,
+      vendedor: vendedorId,
     });
 
-    const newVendedor = await vendedor.save();
-    res.status(201).json(newVendedor);
+    const newPeca = await peca.save();
+    res.status(201).json(newPeca);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
-}
+};
 
-exports.updateVendedor = async (req, res) => {
+exports.updatePeca = async (req, res) => {
   try {
-    const { nome, email, senha, cnpj, endereco, telefone, dataCadastro, status } = req.body;
+    const vendedorId = req.userId; // ID do vendedor logado
+    const pecaId = req.params.id;
+    const { nome, descricao, preco, quantidade } = req.body;
 
-    // Validações dos campos obrigatórios
-    if (!nome || !email || !senha || !cnpj || !endereco || !telefone || !dataCadastro || !status) {
-      return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
-    }
+    const vendedor = await Vendedor.findById(vendedorId);
 
-    const updatedVendedor = await Vendedor.findByIdAndUpdate(req.params.id, {
-      nome,
-      email,
-      senha,
-      cnpj,
-      endereco,
-      telefone,
-      dataCadastro,
-      status
-    }, { new: true });
-
-    if (!updatedVendedor) {
+    if (!vendedor) {
       return res.status(404).json({ message: 'Vendedor não encontrado' });
     }
 
-    res.status(200).json(updatedVendedor);
+    const peca = await Peca.findOneAndUpdate(
+      { _id: pecaId, vendedor: vendedorId },
+      { nome, descricao, preco, quantidade },
+      { new: true }
+    );
+
+    if (!peca) {
+      return res.status(404).json({ message: 'Peça não encontrada' });
+    }
+
+    res.status(200).json(peca);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
-}
+};
 
-exports.deleteVendedor = async (req, res) => {
+exports.deletePeca = async (req, res) => {
   try {
-    const deletedVendedor = await Vendedor.findByIdAndDelete(req.params.id);
+    const vendedorId = req.userId; // ID do vendedor logado
+    const pecaId = req.params.id;
 
-    if (!deletedVendedor) {
+    const vendedor = await Vendedor.findById(vendedorId);
+
+    if (!vendedor) {
       return res.status(404).json({ message: 'Vendedor não encontrado' });
     }
 
-    res.status(200).json({ message: 'Vendedor excluído com sucesso' });
+    const deletedPeca = await Peca.findOneAndDelete({ _id: pecaId, vendedor: vendedorId });
+
+    if (!deletedPeca) {
+      return res.status(404).json({ message: 'Peça não encontrada' });
+    }
+
+    res.status(200).json({ message: 'Peça excluída com sucesso' });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
-}
+};
+
+exports.getPedidos = async (req, res) => {
+  try {
+    const vendedorId = req.userId; // ID do vendedor logado
+
+    const vendedor = await Vendedor.findById(vendedorId);
+
+    if (!vendedor) {
+      return res.status(404).json({ message: 'Vendedor não encontrado' });
+    }
+
+    const pedidos = await Peca.find({ vendedor: vendedorId });
+
+    res.status(200).json(pedidos);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.gerenciarStatusEntrega = async (req, res) => {
+  try {
+    const vendedorId = req.userId; // ID do vendedor logado
+    const pedidoId = req.params.id;
+    const { statusEntrega } = req.body;
+
+    const vendedor = await Vendedor.findById(vendedorId);
+
+    if (!vendedor) {
+      return res.status(404).json({ message: 'Vendedor não encontrado' });
+    }
+
+    const pedido = await Peca.findOneAndUpdate(
+      { _id: pedidoId, vendedor: vendedorId },
+      { statusEntrega },
+      { new: true }
+    );
+
+    if (!pedido) {
+      return res.status(404).json({ message: 'Pedido não encontrado' });
+    }
+
+    res.status(200).json(pedido);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.getRelatorios = async (req, res) => {
+  try {
+    const vendedorId = req.userId; // ID do vendedor logado
+
+    const vendedor = await Vendedor.findById(vendedorId);
+
+    if (!vendedor) {
+      return res.status(404).json({ message: 'Vendedor não encontrado' });
+    }
+
+    // Aqui você pode implementar a lógica para gerar os relatórios e estatísticas desejadas
+    // com base nas peças cadastradas pelo vendedor
+
+    res.status(200).json({ message: 'Relatórios e estatísticas do vendedor' });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};

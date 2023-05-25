@@ -1,14 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const clienteController = require('../controllers/ClientesControllers');
+const {
+  registerCliente,
+  loginCliente,
+  updateCliente,
+  deleteCliente
+} = require('../controllers/ClientesControllers');
 
-//rota cliente
-router.get('/', clienteController.getClientes);
-router.get('/cpf/:cpf', clienteController.getClienteByCPF);
-router.get('/:id', clienteController.getClienteById);
-router.post('/', clienteController.createCliente);
-router.put('/:id', clienteController.updateCliente);
-router.delete('/:id', clienteController.deleteCliente);
+// Rota para registrar um cliente
+router.post('/', registerCliente);
 
-//todas as rotas ok!!!!
+// Rota para fazer login de um cliente
+router.post('/login', loginCliente);
+
+// Rota para atualizar os dados de um cliente
+router.put('/:id', updateCliente);
+
+// Rota para excluir um cliente
+router.delete('/:id', deleteCliente);
+
 module.exports = router;
