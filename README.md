@@ -4,7 +4,7 @@
 <br>
     Miguel Amoedo - Desenvolvedor Full Stack.
 <br>
-    Edevaldo - Gerente de projeto.
+    Edevaldo Sousa - Gerente de projeto.
 <br>
     Guilherme Campos - Desenvolvedor FrontEnd.
 <br>
