@@ -1,0 +1,203 @@
+
+
+LOGIN E TOKEN
+post - http://localhost:5000/login/validarToken
+post - http://localhost:5000/login/vendedor
+post - http://localhost:5000/login/cliente
+
+COMPRAS
+get- http://localhost:5000/compras/
+post - http://localhost:5000/compras/carrinho
+del- http://localhost:5000/compras/carrinho/(id)
+post - http://localhost:5000/compras/finalizar/646a1a195d1122a0c59be727
+get- http://localhost:5000/compras/646a1a195d1122a0c59be727
+put - http://localhost:5000/compras/cancelar/646a1aec430311b306945fb0
+
+PEÇAS
+get- http://localhost:5000/pecas
+get- http://localhost:5000/pecas/(id)
+post - http://localhost:5000/pecas
+put - http://localhost:5000/pecas/(id
+del - http://localhost:5000/pecas/(id)
+
+VENDEDORES
+get- http://localhost:5000/vendedores
+post - http://localhost:5000/vendedores
+get - http://localhost:5000/vendedores/6469539f04b657575225ba91
+put - http://localhost:5000/vendedores/(id)
+del - http://localhost:5000/vendedores/(id)
+
+CLIENTES
+get- http://localhost:5000/clientes
+get - http://localhost:5000/clientes/(id)
+del - http://localhost:5000/clientes/(id)
+put - http://localhost:5000/clientes/(id)
+post - http://localhost:5000/clientes
+get - http://localhost:5000/clientes/cpf/(cpf)
+
+
+Rota para o login do cliente:
+Método: POST
+URL: http://localhost:5000/login/cliente
+Rota para o cadastro do cliente:
+Método: POST
+URL: http://localhost:5000/login/cliente/cadastro
+Rota para o login do vendedor:
+Método: POST
+URL: http://localhost:5000/login/vendedor
+Rota para o cadastro do vendedor:
+Método: POST
+URL: http://localhost:5000/login/vendedor/cadastro
+Rota para validar o token de autenticação:
+Método: POST
+URL: http://localhost:5000/login/validarToken
+Rota para fazer login como administrador:
+
+Método: POST
+URL: http://localhost:5000/admin/login
+Rota para validar o token de autenticação do administrador:
+
+Método: POST
+URL: http://localhost:5000/admin/validar-token
+Rota para obter todos os clientes:
+
+Método: GET
+URL: http://localhost:5000/admin/clientes
+Rota para obter um cliente pelo ID:
+
+Método: GET
+URL: http://localhost:5000/admin/clientes/{id}
+Substitua {id} pelo ID do cliente desejado.
+Rota para adicionar um cliente:
+
+Método: POST
+URL: http://localhost:5000/admin/clientes
+Rota para atualizar um cliente:
+
+Método: PUT
+URL: http://localhost:5000/admin/clientes/{id}
+Substitua {id} pelo ID do cliente que deseja atualizar.
+Rota para excluir um cliente:
+
+Método: DELETE
+URL: http://localhost:5000/admin/clientes/{id}
+Substitua {id} pelo ID do cliente que deseja excluir.
+Rota para obter todos os vendedores:
+
+Método: GET
+URL: http://localhost:5000/admin/vendedores
+Rota para adicionar um vendedor:
+
+Método: POST
+URL: http://localhost:5000/admin/vendedores
+Rota para atualizar um vendedor:
+
+Método: PUT
+URL: http://localhost:5000/admin/vendedores/{id}
+Substitua {id} pelo ID do vendedor que deseja atualizar.
+Rota para excluir um vendedor:
+
+Método: DELETE
+URL: http://localhost:5000/admin/vendedores/{id}
+Substitua {id} pelo ID do vendedor que deseja excluir.
+Rota para adicionar uma peça:
+
+Método: POST
+URL: http://localhost:5000/admin/pecas
+Rota para atualizar uma peça:
+
+Método: PUT
+URL: http://localhost:5000/admin/pecas/{id}
+Substitua {id} pelo ID da peça que deseja atualizar.
+Rota para excluir uma peça:
+
+Método: DELETE
+URL: http://localhost:5000/admin/pecas/{id}
+Substitua {id} pelo ID da peça que deseja excluir.
+Rota para obter todos os pedidos:
+
+Método: GET
+URL: http://localhost:5000/admin/pedidos
+Rota para obter o estoque:
+
+Método: GET
+URL: http://localhost:5000/admin/estoque
+
+CLIENTES:
+
+Rota para registrar um cliente:
+Método: POST
+URL: http://localhost:5000/clientes/
+Rota para fazer login de um cliente:
+Método: POST
+URL: http://localhost:5000/clientes/login
+Rota para atualizar os dados de um cliente:
+Método: PUT
+URL: http://localhost:5000/clientes/{id}
+Substitua {id} pelo ID do cliente que deseja atualizar.
+Rota para excluir um cliente:
+Método: DELETE
+URL: http://localhost:5000/clientes/{id}
+Substitua {id} pelo ID do cliente que deseja excluir.
+
+compras:
+
+Rota para adicionar um item ao carrinho de compras:
+
+Rota: POST http://localhost:5000/carrinho
+Rota para remover um item do carrinho de compras:
+
+Rota: DELETE http://localhost:5000/carrinho/:itemId
+Rota para finalizar a compra:
+
+Rota: POST http://localhost:5000/finalizar/:compraId
+Rota para obter os detalhes de uma compra:
+
+Rota: GET http://localhost:5000/:compraId
+Rota para cancelar uma compra em andamento:
+
+Rota: PUT http://localhost:5000/cancelar/:compraId
+Rota para obter todas as compras:
+
+Rota: GET http://localhost:5000/
+
+peças:
+
+Listar todas as peças:
+
+Rota: GET http://localhost:5000/
+Criar uma nova peça:
+
+Rota: POST http://localhost:5000/
+Atualizar uma peça existente:
+
+Rota: PUT http://localhost:5000/:id
+Exemplo: PUT http://localhost:5000/123
+Excluir uma peça existente:
+
+Rota: DELETE http://localhost:5000/:id
+Exemplo: DELETE http://localhost:5000/123
+
+vendedor:
+
+Criar uma nova peça:
+
+Rota: POST http://localhost:5000/pecas
+Atualizar uma peça existente:
+
+Rota: PUT http://localhost:5000/pecas/:id
+Exemplo: PUT http://localhost:5000/pecas/123
+Excluir uma peça existente:
+
+Rota: DELETE http://localhost:5000/pecas/:id
+Exemplo: DELETE http://localhost:5000/pecas/123
+Listar os pedidos do vendedor:
+
+Rota: GET http://localhost:5000/pedidos
+Gerenciar o status de entrega de um pedido:
+
+Rota: PUT http://localhost:5000/pedidos/:id
+Exemplo: PUT http://localhost:5000/pedidos/123
+Obter relatórios e estatísticas do vendedor:
+
+Rota: GET http://localhost:5000/relatorios
