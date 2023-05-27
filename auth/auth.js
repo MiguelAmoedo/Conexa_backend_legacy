@@ -1,3 +1,4 @@
+/*
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
@@ -51,3 +52,5 @@ module.exports = {
   vendedorAuth: passport.authenticate('vendedor-jwt', { session: false }),
   clienteAuth: passport.authenticate('cliente-jwt', { session: false }),
 };
+
+*/

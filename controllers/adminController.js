@@ -1,58 +1,184 @@
 const Admin = require('../models/adminModels');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const secretKey = 'chave_secreta_do_token';
+
+const Cliente = require('../models/clientesModels');
 const Vendedor = require('../models/VendedorModels');
 const Peca = require('../models/PecasModels');
+const Compra = require('../models/compraModels');
+
+
+exports.criarAdmin = async (req, res) => {
+  const { nome, email, senha } = req.body;
+
+  try {
+    // Verifica se o admin já está cadastrado
+    const adminExistente = await Admin.findOne({ email });
+
+    if (adminExistente) {
+      return res.status(400).json({ error: 'Admin já cadastrado.' });
+    }
+
+    // Criptografa a senha do admin
+    const senhaCriptografada = await bcrypt.hash(senha, 10);
+
+    // Cria o objeto de admin
+    const admin = new Admin({
+      nome,
+      email,
+      senha: senhaCriptografada
+    });
+
+    // Salva o admin no banco de dados
+    await admin.save();
+
+    res.status(201).json({ message: 'Admin criado com sucesso.' });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Erro ao criar admin.' });
+  }
+};
+
+
 
 exports.loginAdmin = async (req, res) => {
   try {
     const { email, senha } = req.body;
 
-    // Verifica se o email do administrador está correto
-    const admin = await Admin.findOne({ email });
+    // Verifique as credenciais do administrador aqui (por exemplo, email e senha)
 
-    if (!admin) {
-      return res.status(404).json({ message: 'E-mail ou senha inválidos' });
-    }
+    // Se as credenciais forem válidas, gere o token
+    const token = jwt.sign({ role: 'admin' }, 'chave-secreta-do-token', { expiresIn: '1h' });
 
-    // Verifica se a senha do administrador está correta
-    const isPasswordValid = await bcrypt.compare(senha, admin.senha);
-
-    if (!isPasswordValid) {
-      return res.status(401).json({ message: 'E-mail ou senha inválidos' });
-    }
-
-    // Gera o token de autenticação
-    const token = jwt.sign({ id: admin._id }, secretKey);
-
-    res.status(200).json({ message: 'Login do administrador bem-sucedido', token });
+    res.status(200).json({ token });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-exports.validarTokenAdmin = async (req, res) => {
-  const { token } = req.body;
+
+// Função para validar o token do admin
+
+
+exports.validarTokenAdmin = async (req, res, next) => {
+  const token = req.headers.authorization;
 
   if (!token) {
-    return res.status(401).json({ message: 'Token de autenticação não fornecido.' });
+    return res.status(401).json({ error: 'Token não fornecido.' });
   }
+    jwt.verify(token, 'chave_secreta_do_token', (err, decoded) => {
+      if (err) {
+        return res.status(401).json({ error: 'Token inválido.' });
+      }
+      
+      req.adminId = decoded.id;
+      next();
+    });
+  };
+  
 
-  jwt.verify(token, secretKey, (err, decodedToken) => {
-    if (err) {
-      return res.status(401).json({ message: 'Token inválido' });
+
+
+exports.createVendedor = async (req, res) => {
+  try {
+    const { nome, email, telefone } = req.body;
+
+    const vendedor = new Vendedor({ nome, email, telefone });
+
+    await vendedor.save();
+
+    res.status(201).json(vendedor);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.updateVendedor = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { nome, email, telefone } = req.body;
+
+    const vendedor = await Vendedor.findByIdAndUpdate(
+      id,
+      { nome, email, telefone },
+      { new: true }
+    );
+
+    if (!vendedor) {
+      return res.status(404).json({ message: 'Vendedor não encontrado' });
     }
 
-    // Verifica se o token pertence a um administrador
-    const admin = Admin.findById(decodedToken.id);
+    res.status(200).json(vendedor);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-    if (admin) {
-      return res.status(200).json({ message: 'Token de administrador válido' });
-    } else {
-      return res.status(401).json({ message: 'Token inválido' });
+exports.deleteVendedor = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const vendedor = await Vendedor.findByIdAndDelete(id);
+
+    if (!vendedor) {
+      return res.status(404).json({ message: 'Vendedor não encontrado' });
     }
-  });
+
+    res.status(200).json({ message: 'Vendedor excluído com sucesso' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.createPeca = async (req, res) => {
+  try {
+    const { nome, descricao, preco } = req.body;
+
+    const peca = new Peca({ nome, descricao, preco });
+
+    await peca.save();
+
+    res.status(201).json(peca);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.updatePeca = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { nome, descricao, preco } = req.body;
+
+    const peca = await Peca.findByIdAndUpdate(
+      id,
+      { nome, descricao, preco },
+      { new: true }
+    );
+
+    if (!peca) {
+      return res.status(404).json({ message: 'Peça não encontrada' });
+    }
+
+    res.status(200).json(peca);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.deletePeca = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const peca = await Peca.findByIdAndDelete(id);
+
+    if (!peca) {
+      return res.status(404).json({ message: 'Peça não encontrada' });
+    }
+
+    res.status(200).json({ message: 'Peça excluída com sucesso' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 exports.getAllClientes = async (req, res) => {
@@ -66,7 +192,8 @@ exports.getAllClientes = async (req, res) => {
 
 exports.getClienteById = async (req, res) => {
   try {
-    const cliente = await Cliente.findById(req.params.id);
+    const { id } = req.params;
+    const cliente = await Cliente.findById(id);
     if (!cliente) {
       return res.status(404).json({ message: 'Cliente não encontrado' });
     }
@@ -76,197 +203,83 @@ exports.getClienteById = async (req, res) => {
   }
 };
 
-exports.addCliente = async (req, res) => {
+exports.getAllVendedores = async (req, res) => {
   try {
-    const { nome, email, senha, cpf, endereco, telefone } = req.body;
-
-    const cliente = new Cliente({
-      nome,
-      email,
-      senha,
-      cpf,
-      endereco,
-      telefone,
-    });
-
-    const newCliente = await cliente.save();
-    res.status(201).json(newCliente);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
-
-exports.updateCliente = async (req, res) => {
-  try {
-    const { nome, email, senha, cpf, endereco, telefone } = req.body;
-
-    const cliente = await Cliente.findById(req.params.id);
-
-    if (!cliente) {
-      return res.status(404).json({ message: 'Cliente não encontrado' });
-    }
-
-    cliente.nome = nome;
-    cliente.email = email;
-    cliente.senha = senha;
-    cliente.cpf = cpf;
-    cliente.endereco = endereco;
-    cliente.telefone = telefone;
-
-    const updatedCliente = await cliente.save();
-    res.status(200).json(updatedCliente);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
-
-exports.deleteCliente = async (req, res) => {
-  try {
-    const cliente = await Cliente.findById(req.params.id);
-
-    if (!cliente) {
-      return res.status(404).json({ message: 'Cliente não encontrado' });
-    }
-
-    await cliente.remove();
-    res.status(200).json({ message: 'Cliente removido com sucesso' });
+    const vendedores = await Vendedor.find();
+    res.status(200).json(vendedores);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
-exports.getVendedores = async (req, res) => {
-    try {
-      const vendedores = await Vendedor.find();
-      res.status(200).json(vendedores);
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-  };
-  
-  exports.addVendedor = async (req, res) => {
-    try {
-      const { nome, email, senha } = req.body;
-  
-      const vendedor = new Vendedor({
-        nome,
-        email,
-        senha,
-      });
-  
-      const newVendedor = await vendedor.save();
-      res.status(201).json(newVendedor);
-    } catch (error) {
-      res.status(400).json({ message: error.message });
-    }
-  };
-  
-  exports.updateVendedor = async (req, res) => {
-    try {
-      const { nome, email, senha } = req.body;
-  
-      const vendedor = await Vendedor.findById(req.params.id);
-  
-      if (!vendedor) {
-        return res.status(404).json({ message: 'Vendedor não encontrado' });
-      }
-  
-      vendedor.nome = nome;
-      vendedor.email = email;
-      vendedor.senha = senha;
-  
-      const updatedVendedor = await vendedor.save();
-      res.status(200).json(updatedVendedor);
-    } catch (error) {
-      res.status(400).json({ message: error.message });
-    }
-  };
-  
-  exports.deleteVendedor = async (req, res) => {
-    try {
-      const vendedor = await Vendedor.findById(req.params.id);
-  
-      if (!vendedor) {
-        return res.status(404).json({ message: 'Vendedor não encontrado' });
-      }
-  
-      await vendedor.remove();
-      res.status(200).json({ message: 'Vendedor removido com sucesso' });
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-  };
 
-  exports.addPeca = async (req, res) => {
+exports.getVendedorById = async (req, res) => {
   try {
-    const { nome, descricao, preco, quantidade } = req.body;
-
-    const peca = new Peca({
-      nome,
-      descricao,
-      preco,
-      quantidade,
-    });
-
-    const newPeca = await peca.save();
-    res.status(201).json(newPeca);
+    const { id } = req.params;
+    const vendedor = await Vendedor.findById(id);
+    if (!vendedor) {
+      return res.status(404).json({ message: 'Vendedor não encontrado' });
+    }
+    res.status(200).json(vendedor);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
-exports.updatePeca = async (req, res) => {
+exports.getAllPecas = async (req, res) => {
   try {
-    const pecaId = req.params.id;
-    const { nome, descricao, preco, quantidade } = req.body;
+    const pecas = await Peca.find();
+    res.status(200).json(pecas);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-    const peca = await Peca.findByIdAndUpdate(
-      pecaId,
-      { nome, descricao, preco, quantidade },
-      { new: true }
-    );
-
+exports.getPecaById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const peca = await Peca.findById(id);
     if (!peca) {
       return res.status(404).json({ message: 'Peça não encontrada' });
     }
-
     res.status(200).json(peca);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
-exports.deletePeca = async (req, res) => {
+exports.getAllCompras = async (req, res) => {
   try {
-    const pecaId = req.params.id;
+    const compras = await Compra.find();
+    res.status(200).json(compras);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-    const deletedPeca = await Peca.findByIdAndDelete(pecaId);
-
-    if (!deletedPeca) {
-      return res.status(404).json({ message: 'Peça não encontrada' });
+exports.getCompraById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const compra = await Compra.findById(id);
+    if (!compra) {
+      return res.status(404).json({ message: 'Compra não encontrada' });
     }
-
-    res.status(200).json({ message: 'Peça excluída com sucesso' });
+    res.status(200).json(compra);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
-exports.getPedidos = async (req, res) => {
+exports.cancelarCompra = async (req, res) => {
   try {
-    const pedidos = await Peca.find();
-
-    res.status(200).json(pedidos);
+    const { id } = req.params;
+    const compra = await Compra.findById(id);
+    if (!compra) {
+      return res.status(404).json({ message: 'Compra não encontrada' });
+    }
+    compra.status = 'Cancelada';
+    await compra.save();
+    res.status(200).json(compra);
   } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
-
-exports.getEstoque = async (req, res) => {
-  try {
-    const estoque = await Peca.find();
-
-    res.status(200).json(estoque);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };

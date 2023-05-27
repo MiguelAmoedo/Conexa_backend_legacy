@@ -1,23 +1,55 @@
 const express = require('express');
 const router = express.Router();
-const vendedorController = require('../controllers/VendedorControllers');
+const {
+  validarToken,
+  autenticarVendedor,
+  adicionarPeca,
+  atualizarPeca,
+  excluirPeca,
+  visualizarPedidos,
+  atualizarStatusPedido,
+  controlarEstoque,
+  visualizarRelatorios,
+  visualizarInformacoesPessoais,
+  atualizarInformacoesPessoais,
+  alterarSenha
+  // Outros controladores relacionados às instruções fornecidas
+} = require('../controllers/VendedorControllers');
+const pecasController = require('../controllers/PecasControllers');
 
-// Criar uma nova peça
-router.post('/pecas', vendedorController.addPeca);
+// Rota para autenticação do vendedor
+router.post('/login', autenticarVendedor);
 
-// Atualizar uma peça existente
-router.put('/pecas/:id', vendedorController.updatePeca);
+// Middleware para validar o token do vendedor
+router.use(validarToken);
 
-// Excluir uma peça existente
-router.delete('/pecas/:id', vendedorController.deletePeca);
+// Rotas para gerenciamento de peças
+router.post('/pecas', adicionarPeca);
+router.put('/pecas/:id', atualizarPeca);
+router.delete('/pecas/:id', excluirPeca);
+// Outras rotas relacionadas ao gerenciamento de peças
+// Outras rotas relacionadas ao gerenciamento de peças
 
-// Listar os pedidos do vendedor
-router.get('/pedidos', vendedorController.getPedidos);
+// Rota para visualizar os pedidos do vendedor
+router.get('/pedidos', visualizarPedidos);
 
-// Gerenciar o status de entrega de um pedido
-router.put('/pedidos/:id', vendedorController.gerenciarStatusEntrega);
+// Rota para atualizar o status de um pedido
+router.put('/pedidos/:id', atualizarStatusPedido);
 
-// Obter relatórios e estatísticas do vendedor
-router.get('/relatorios', vendedorController.getRelatorios);
+// Rota para controlar o estoque de uma peça
+
+router.get('/estoque', pecasController.getEstoque);
+
+// Rota para visualizar os relatórios
+router.get('/relatorios', visualizarRelatorios);
+
+// Rota para visualizar as informações pessoais do vendedor
+router.get('/informacoes', visualizarInformacoesPessoais);
+
+// Rota para atualizar as informações pessoais do vendedor
+router.put('/informacoes', atualizarInformacoesPessoais);
+
+// Rota para alterar a senha do vendedor
+router.put('/senha', alterarSenha);
 
 module.exports = router;

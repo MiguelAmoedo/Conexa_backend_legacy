@@ -2,6 +2,32 @@
 const Peca = require('../models/PecasModels');
 const Vendedor = require('../models/VendedorModels');
 
+
+
+exports.getAllPecas = async (req, res) => {
+  try {
+    const pecas = await Peca.find();
+    res.status(200).json(pecas);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.getPecaById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const peca = await Peca.findById(id);
+    
+    if (!peca) {
+      return res.status(404).json({ message: 'Peça não encontrada' });
+    }
+    
+    res.status(200).json(peca);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 exports.addPeca = async (req, res) => {
   try {
     const vendedorId = req.userId; // ID do vendedor logado

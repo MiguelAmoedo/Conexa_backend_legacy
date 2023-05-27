@@ -11,7 +11,7 @@ var pecasRouter = require('./routes/pecas');
 var buscaPecaRouter =  require('./routes/buscapeca');
 var loginRouter = require('./routes/login')
 var comprasRouter = require('./routes/compras')
-var adminRouter = require('./routes/admin')
+ var adminRouter = require('./routes/admin')
 
 var app = express();
 

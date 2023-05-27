@@ -1,28 +1,80 @@
 const express = require('express');
 const router = express.Router();
-const adminController = require('../controllers/adminController');
-const { adminAuth } = require('../auth/admin');
+const {
+    criarAdmin,
+  loginAdmin,
+  validarTokenAdmin,
+  createVendedor,
+  updateVendedor,
+  deleteVendedor,
+  createPeca,
+  updatePeca,
+  deletePeca,
+  getAllClientes,
+  getClienteById,
+  getAllVendedores,
+  getVendedorById,
+  getAllPecas,
+  getPecaById,
+  getAllCompras,
+  getCompraById,
+  cancelarCompra,
+ 
+  // Outros controladores relacionados às instruções fornecidas
+} = require('../controllers/adminController');
 
-// Rotas do administrador
-router.post('/admin/login', adminController.loginAdmin);
-router.post('/admin/validar-token', adminController.validarTokenAdmin);
+// Rota para criação de um novo admin
+router.post('/cadastro', criarAdmin);
 
-router.get('/admin/clientes', adminAuth, adminController.getAllClientes);
-router.get('/admin/clientes/:id', adminAuth, adminController.getClienteById);
-router.post('/admin/clientes', adminAuth, adminController.addCliente);
-router.put('/admin/clientes/:id', adminAuth, adminController.updateCliente);
-router.delete('/admin/clientes/:id', adminAuth, adminController.deleteCliente);
+// Rota para login do admin
+router.post('/login', loginAdmin);
 
-router.get('/admin/vendedores', adminAuth, adminController.getVendedores);
-router.post('/admin/vendedores', adminAuth, adminController.addVendedor);
-router.put('/admin/vendedores/:id', adminAuth, adminController.updateVendedor);
-router.delete('/admin/vendedores/:id', adminAuth, adminController.deleteVendedor);
+// Middleware para validar o token do admin
+router.use(validarTokenAdmin);
 
-router.post('/admin/pecas', adminAuth, adminController.addPeca);
-router.put('/admin/pecas/:id', adminAuth, adminController.updatePeca);
-router.delete('/admin/pecas/:id', adminAuth, adminController.deletePeca);
+// Rota para criação de um novo vendedor
+router.post('/vendedores', createVendedor);
 
-router.get('/admin/pedidos', adminAuth, adminController.getPedidos);
-router.get('/admin/estoque', adminAuth, adminController.getEstoque);
+// Rota para atualização de um vendedor existente
+router.put('/vendedores/:id', updateVendedor);
+
+// Rota para exclusão de um vendedor
+router.delete('/vendedores/:id', deleteVendedor);
+
+// Rota para criação de uma nova peça
+router.post('/pecas', createPeca);
+
+// Rota para atualização de uma peça existente
+router.put('/pecas/:id', updatePeca);
+
+// Rota para exclusão de uma peça
+router.delete('/pecas/:id', deletePeca);
+
+// Rota para obter todos os clientes
+router.get('/clientes', getAllClientes);
+
+// Rota para obter um cliente pelo ID
+router.get('/clientes/:id', getClienteById);
+
+// Rota para obter todos os vendedores
+router.get('/vendedores', getAllVendedores);
+
+// Rota para obter um vendedor pelo ID
+router.get('/vendedores/:id', getVendedorById);
+
+// Rota para obter todas as peças
+router.get('/pecas', getAllPecas);
+
+// Rota para obter uma peça pelo ID
+router.get('/pecas/:id', getPecaById);
+
+// Rota para obter todas as compras
+router.get('/compras', getAllCompras);
+
+// Rota para obter uma compra pelo ID
+router.get('/compras/:id', getCompraById);
+
+// Rota para cancelar uma compra
+router.put('/compras/:id/cancelar', cancelarCompra);
 
 module.exports = router;
