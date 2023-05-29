@@ -7,29 +7,24 @@ const Vendedor = require('../models/VendedorModels');
 const Peca = require('../models/PecasModels');
 const Compra = require('../models/compraModels');
 
-
 exports.criarAdmin = async (req, res) => {
   const { nome, email, senha } = req.body;
 
   try {
-    // Verifica se o admin já está cadastrado
     const adminExistente = await Admin.findOne({ email });
 
     if (adminExistente) {
       return res.status(400).json({ error: 'Admin já cadastrado.' });
     }
 
-    // Criptografa a senha do admin
     const senhaCriptografada = await bcrypt.hash(senha, 10);
 
-    // Cria o objeto de admin
     const admin = new Admin({
       nome,
       email,
       senha: senhaCriptografada
     });
 
-    // Salva o admin no banco de dados
     await admin.save();
 
     res.status(201).json({ message: 'Admin criado com sucesso.' });
@@ -39,45 +34,72 @@ exports.criarAdmin = async (req, res) => {
   }
 };
 
-
-
 exports.loginAdmin = async (req, res) => {
   try {
     const { email, senha } = req.body;
 
-    // Verifique as credenciais do administrador aqui (por exemplo, email e senha)
+    const admin = await Admin.findOne({ email });
 
-    // Se as credenciais forem válidas, gere o token
-    const token = jwt.sign({ role: 'admin' }, 'chave-secreta-do-token', { expiresIn: '1h' });
+    if (!admin) {
+      return res.status(400).json({ error: 'Admin não encontrado.' });
+    }
 
-    res.status(200).json({ token });
+    const senhaCorreta = await bcrypt.compare(senha, admin.senha);
+
+    if (!senhaCorreta) {
+      return res.status(400).json({ error: 'Credenciais inválidas.' });
+    }
+
+    const token = jwt.sign({ id: admin._id }, 'chave_secreta_do_token');
+
+    res.json({ token });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.log(error);
+    res.status(500).json({ error: 'Erro ao autenticar admin.' });
   }
 };
 
-
-// Função para validar o token do admin
-
-
-exports.validarTokenAdmin = async (req, res, next) => {
+exports.validarToken = (req, res, next) => {
   const token = req.headers.authorization;
 
   if (!token) {
     return res.status(401).json({ error: 'Token não fornecido.' });
   }
-    jwt.verify(token, 'chave_secreta_do_token', (err, decoded) => {
-      if (err) {
-        return res.status(401).json({ error: 'Token inválido.' });
-      }
-      
-      req.adminId = decoded.id;
-      next();
-    });
-  };
-  
 
+  jwt.verify(token, 'chave_secreta_do_token', (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ error: 'Token inválido.' });
+    }
+    
+    req.adminId = decoded.id;
+    next();
+  });
+};
 
+exports.autenticarAdmin = async (req, res) => {
+  const { email, senha } = req.body;
+
+  try {
+    const admin = await Admin.findOne({ email });
+
+    if (!admin) {
+      return res.status(400).json({ error: 'Admin não encontrado.' });
+    }
+
+    const senhaCorreta = await bcrypt.compare(senha, admin.senha);
+
+    if (!senhaCorreta) {
+      return res.status(400).json({ error: 'Credenciais inválidas.' });
+    }
+
+    const token = jwt.sign({ id: admin._id }, 'chave_secreta_do_token');
+
+    res.json({ token });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Erro ao autenticar admin.' });
+  }
+};
 
 exports.createVendedor = async (req, res) => {
   try {
@@ -91,44 +113,7 @@ exports.createVendedor = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
-
-exports.updateVendedor = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { nome, email, telefone } = req.body;
-
-    const vendedor = await Vendedor.findByIdAndUpdate(
-      id,
-      { nome, email, telefone },
-      { new: true }
-    );
-
-    if (!vendedor) {
-      return res.status(404).json({ message: 'Vendedor não encontrado' });
-    }
-
-    res.status(200).json(vendedor);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-exports.deleteVendedor = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const vendedor = await Vendedor.findByIdAndDelete(id);
-
-    if (!vendedor) {
-      return res.status(404).json({ message: 'Vendedor não encontrado' });
-    }
-
-    res.status(200).json({ message: 'Vendedor excluído com sucesso' });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+}; 
 
 exports.createPeca = async (req, res) => {
   try {
@@ -283,3 +268,4 @@ exports.cancelarCompra = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+

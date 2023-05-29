@@ -12,7 +12,8 @@ const {
   visualizarRelatorios,
   visualizarInformacoesPessoais,
   atualizarInformacoesPessoais,
-  alterarSenha
+  alterarSenha,
+  getVendedorPeca
   // Outros controladores relacionados às instruções fornecidas
 } = require('../controllers/VendedorControllers');
 const pecasController = require('../controllers/PecasControllers');
@@ -24,6 +25,8 @@ router.post('/login', autenticarVendedor);
 router.use(validarToken);
 
 // Rotas para gerenciamento de peças
+// Rota para obter as peças adicionadas pelo vendedor atual
+router.get('/pecas', getVendedorPeca);
 router.post('/pecas', adicionarPeca);
 router.put('/pecas/:id', atualizarPeca);
 router.delete('/pecas/:id', excluirPeca);

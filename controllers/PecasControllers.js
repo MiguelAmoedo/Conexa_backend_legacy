@@ -13,97 +13,67 @@ exports.getAllPecas = async (req, res) => {
   }
 };
 
+// Método para obter uma peça por ID
 exports.getPecaById = async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
     const peca = await Peca.findById(id);
-    
     if (!peca) {
       return res.status(404).json({ message: 'Peça não encontrada' });
     }
-    
     res.status(200).json(peca);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-exports.addPeca = async (req, res) => {
+// Método para criar uma nova peça
+exports.createPeca = async (req, res) => {
+  const { idVendedor, ...pecaData } = req.body;
   try {
-    const vendedorId = req.userId; // ID do vendedor logado
-    const { nome, descricao, preco, quantidade } = req.body;
-
-    const vendedor = await Vendedor.findById(vendedorId);
-
-    if (!vendedor) {
-      return res.status(404).json({ message: 'Vendedor não encontrado' });
-    }
-
-    const peca = new Peca({
-      nome,
-      descricao,
-      preco,
-      quantidade,
-      vendedor: vendedorId,
-    });
-
-    const newPeca = await peca.save();
-    res.status(201).json(newPeca);
+    const peca = new Peca({ idVendedor, ...pecaData });
+    const novaPeca = await peca.save();
+    res.status(201).json(novaPeca);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
+// Método para atualizar uma peça existente
 exports.updatePeca = async (req, res) => {
+  const { id } = req.params;
+  const { idVendedor, ...pecaData } = req.body;
   try {
-    const vendedorId = req.userId; // ID do vendedor logado
-    const pecaId = req.params.id;
-    const { nome, descricao, preco, quantidade } = req.body;
-
-    const vendedor = await Vendedor.findById(vendedorId);
-
-    if (!vendedor) {
-      return res.status(404).json({ message: 'Vendedor não encontrado' });
-    }
-
-    const peca = await Peca.findOneAndUpdate(
-      { _id: pecaId, vendedor: vendedorId },
-      { nome, descricao, preco, quantidade },
-      { new: true }
-    );
-
+    const peca = await Peca.findByIdAndUpdate(id, { idVendedor, ...pecaData }, { new: true });
     if (!peca) {
       return res.status(404).json({ message: 'Peça não encontrada' });
     }
-
     res.status(200).json(peca);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
+// Método para excluir uma peça existente
 exports.deletePeca = async (req, res) => {
+  const { id } = req.params;
   try {
-    const vendedorId = req.userId; // ID do vendedor logado
-    const pecaId = req.params.id;
-
-    const vendedor = await Vendedor.findById(vendedorId);
-
-    if (!vendedor) {
-      return res.status(404).json({ message: 'Vendedor não encontrado' });
-    }
-
-    const deletedPeca = await Peca.findOneAndDelete({ _id: pecaId, vendedor: vendedorId });
-
-    if (!deletedPeca) {
+    const peca = await Peca.findByIdAndDelete(id);
+    if (!peca) {
       return res.status(404).json({ message: 'Peça não encontrada' });
     }
-
     res.status(200).json({ message: 'Peça excluída com sucesso' });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
+
+// Método para gerar relatórios de peças
+exports.relatoriosPecas = async (req, res) => {
+  // Lógica para gerar relatórios de peças
+};
+
+
 
 
 exports.getEstoque = async (req, res) => {

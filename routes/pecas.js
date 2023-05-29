@@ -1,17 +1,37 @@
 const express = require('express');
 const router = express.Router();
-const pecasController = require('../controllers/PecasControllers');
 
-// Listar todas as peças
-router.get('/', pecasController.getEstoque);
+// Importe os controladores necessários
+const {
+  getAllPecas,
+  getPecaById,
+  createPeca,
+  updatePeca,
+  deletePeca,
+  relatoriosPecas,
+  getEstoque
 
-// Criar uma nova peça
-router.post('/', pecasController.addPeca);
 
-// Atualizar uma peça existente
-router.put('/:id', pecasController.updatePeca);
+} = require('../controllers/PecasControllers');
 
-// Excluir uma peça existente
-router.delete('/:id', pecasController.deletePeca);
+// Rota para obter todas as peças
+router.get('/', getAllPecas);
+
+// Rota para obter uma peça por ID
+router.get('/:id', getPecaById);
+
+// Rota para criar uma nova peça
+router.post('/', createPeca);
+
+// Rota para atualizar uma peça existente
+router.put('/:id', updatePeca);
+
+// Rota para excluir uma peça existente
+router.delete('/:id', deletePeca);
+
+// Rota para gerar relatórios de peças
+router.get('/relatorios', relatoriosPecas);
+
+router.get('/estoque', getEstoque);
 
 module.exports = router;

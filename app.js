@@ -9,7 +9,7 @@ var clientesRouter = require('./routes/clientes');
 var vendedoresRouter = require('./routes/vendedores');
 var pecasRouter = require('./routes/pecas');
 var buscaPecaRouter =  require('./routes/buscapeca');
-
+var loginRouter =  require('./routes/login');
 var comprasRouter = require('./routes/compras')
  var adminRouter = require('./routes/admin')
 
@@ -33,6 +33,7 @@ app.use('/clientes', clientesRouter);
 app.use('/vendedores', vendedoresRouter);
 app.use('/pecas', pecasRouter);
 app.use('/buscapeca', buscaPecaRouter);
+app.use('/login', loginRouter);
 app.use('/compras', comprasRouter);
 app.use('/admin', adminRouter);
 

@@ -6,7 +6,7 @@ const CompraController = require('../controllers/compraControllers');
 router.post('/carrinho', CompraController.adicionarItemCarrinho);
 
 // Rota para remover um item do carrinho de compras
-router.delete('/carrinho/:itemId', CompraController.removerItemCarrinho);
+router.delete('/carrinho/:pecaId', CompraController.removerItemCarrinho);
 
 // Rota para finalizar a compra
 router.post('/finalizar/:compraId', CompraController.finalizarCompra);

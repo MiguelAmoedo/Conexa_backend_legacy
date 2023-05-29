@@ -1,14 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const {
-  registerCliente,
+ 
   loginCliente,
   updateCliente,
-  deleteCliente
+  deleteCliente,
 } = require('../controllers/ClientesControllers');
 
-// Rota para registrar um cliente
-router.post('/', registerCliente);
 
 // Rota para fazer login de um cliente
 router.post('/login', loginCliente);

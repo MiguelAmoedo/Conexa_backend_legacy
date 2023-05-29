@@ -74,6 +74,19 @@ const adicionarPeca = async (req, res) => {
   }
 };
 
+const getVendedorPeca = (req, res) => {
+  // Obtenha o ID do vendedor autenticado a partir do token ou qualquer outra fonte de autenticação
+  const vendedorId = req.userId; // Supondo que o ID do vendedor esteja armazenado em req.userId
+  
+  // Use o ID do vendedor para consultar o banco de dados e recuperar as peças adicionadas por ele
+  // Substitua essa parte com a lógica adequada para consultar o banco de dados
+
+  const pecas = []; // Armazene as peças encontradas aqui
+
+  // Retorne as peças adicionadas pelo vendedor atual como resposta
+  return res.json(pecas);
+};
+
 // Controller para atualizar uma peça existente
 const atualizarPeca = async (req, res) => {
   const { id } = req.params;
@@ -271,6 +284,7 @@ module.exports = {
   visualizarRelatorios,
   visualizarInformacoesPessoais,
   atualizarInformacoesPessoais,
-  alterarSenha
+  alterarSenha,
+  getVendedorPeca,
   // Outros controllers relacionados às instruções fornecidas
 };
