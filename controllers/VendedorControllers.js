@@ -50,46 +50,85 @@ const autenticarVendedor = async (req, res) => {
 
 // Controller para adicionar uma nova peça
 const adicionarPeca = async (req, res) => {
-  const { nome, marca, modelo, ano, descricao, preco, qtdEstoque, partesVeiculo } = req.body;
+  const { nome, tipoDePeca, marca, modelo, ano, descricao, preco, qtdEstoque, partesVeiculo } = req.body;
 
   try {
-    const novaPeca = new Peca({
+    // Verificar se a peça já existe para o vendedor
+    const pecaExistente = await Peca.findOne({
       nome,
-      marca,
-      modelo,
-      ano,
-      descricao,
-      preco,
-      qtdEstoque,
+      tipoDePeca,
       partesVeiculo,
       idVendedor: req.vendedorId,
-      status: 'Disponivel'
     });
 
-    await novaPeca.save();
+    if (pecaExistente) {
+      // Peça já existe, atualizar apenas o campo qtdEstoque
+      pecaExistente.qtdEstoque += qtdEstoque;
+      await pecaExistente.save();
+      res.json({ message: 'Estoque da peça atualizado com sucesso.' });
+    } else {
+      // Criar uma nova peça
+      const novaPeca = new Peca({
+        nome,
+        tipoDePeca,
+        marca,
+        modelo,
+        ano,
+        descricao,
+        preco,
+        qtdEstoque,
+        partesVeiculo,
+        idVendedor: req.vendedorId,
+        status: 'Disponivel',
+      });
 
-    res.json({ message: 'Peça adicionada com sucesso.' });
+      await novaPeca.save();
+
+      res.json({ message: 'Peça adicionada com sucesso.' });
+    }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: 'Erro ao adicionar peça.' });
+
+    if (error.errors) {
+      const errorMessages = {};
+
+      for (let field in error.errors) {
+        errorMessages[field] = `Erro na validação do campo "${field}".`;
+        console.log(`Erro na validação do campo "${field}".`);
+      }
+
+      res.status(400).json({ error: 'Erro de validação.', errors: errorMessages });
+    } else {
+      res.status(500).json({ error: 'Erro ao adicionar peça.' });
+    }
   }
 };
 
-const getVendedorPeca = async (req, res) => {
-  try {
-    // Obtenha o ID do vendedor autenticado a partir do token ou qualquer outra fonte de autenticação
-    const vendedorId = req.userId; // Supondo que o ID do vendedor esteja armazenado em req.userId
 
+
+const getVendedorPecas = async (req, res) => {
+  // Obtém o ID do vendedor a partir do token validado
+  const vendedorId = req.vendedorId;
+
+  try {
     // Use o ID do vendedor para consultar o banco de dados e recuperar as peças adicionadas por ele
     const pecas = await Peca.find({ idVendedor: vendedorId });
 
-    // Retorne as peças adicionadas pelo vendedor atual como resposta
+    // Verificar se existem peças do vendedor
+    if (pecas.length === 0) {
+      return res.status(404).json({ error: 'Nenhuma peça encontrada para o vendedor.' });
+    }
+
+    // Retorne as peças adicionadas pelo vendedor como resposta
     return res.json(pecas);
   } catch (error) {
     // Em caso de erro, retorne uma resposta de erro adequada
+    console.log(error);
     return res.status(500).json({ error: 'Erro ao obter as peças do vendedor.' });
   }
 };
+
+
 
 // Controller para atualizar uma peça existente
 const atualizarPeca = async (req, res) => {
@@ -289,6 +328,6 @@ module.exports = {
   visualizarInformacoesPessoais,
   atualizarInformacoesPessoais,
   alterarSenha,
-  getVendedorPeca,
+  getVendedorPecas
   // Outros controllers relacionados às instruções fornecidas
 };
