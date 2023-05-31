@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const Vendedor = require('../models/VendedorModels');
 const Peca = require('../models/PecasModels');
+const secretKey = 'secretKey';
 
 // Função para validar o token do vendedor
 const validarToken = (req, res, next) => {
@@ -11,7 +12,7 @@ const validarToken = (req, res, next) => {
     return res.status(401).json({ error: 'Token não fornecido.' });
   }
 
-  jwt.verify(token, 'chave_secreta_do_token', (err, decoded) => {
+  jwt.verify(token, 'secretKey', (err, decoded) => {
     if (err) {
       return res.status(401).json({ error: 'Token inválido.' });
     }
@@ -38,7 +39,7 @@ const autenticarVendedor = async (req, res) => {
       return res.status(400).json({ error: 'Credenciais inválidas.' });
     }
 
-    const token = jwt.sign({ id: vendedor._id }, 'chave_secreta_do_token');
+    const token = jwt.sign({ id: vendedor._id }, 'secretKey');
 
     res.json({ token });
   } catch (error) {
@@ -74,17 +75,20 @@ const adicionarPeca = async (req, res) => {
   }
 };
 
-const getVendedorPeca = (req, res) => {
-  // Obtenha o ID do vendedor autenticado a partir do token ou qualquer outra fonte de autenticação
-  const vendedorId = req.userId; // Supondo que o ID do vendedor esteja armazenado em req.userId
-  
-  // Use o ID do vendedor para consultar o banco de dados e recuperar as peças adicionadas por ele
-  // Substitua essa parte com a lógica adequada para consultar o banco de dados
+const getVendedorPeca = async (req, res) => {
+  try {
+    // Obtenha o ID do vendedor autenticado a partir do token ou qualquer outra fonte de autenticação
+    const vendedorId = req.userId; // Supondo que o ID do vendedor esteja armazenado em req.userId
 
-  const pecas = []; // Armazene as peças encontradas aqui
+    // Use o ID do vendedor para consultar o banco de dados e recuperar as peças adicionadas por ele
+    const pecas = await Peca.find({ idVendedor: vendedorId });
 
-  // Retorne as peças adicionadas pelo vendedor atual como resposta
-  return res.json(pecas);
+    // Retorne as peças adicionadas pelo vendedor atual como resposta
+    return res.json(pecas);
+  } catch (error) {
+    // Em caso de erro, retorne uma resposta de erro adequada
+    return res.status(500).json({ error: 'Erro ao obter as peças do vendedor.' });
+  }
 };
 
 // Controller para atualizar uma peça existente

@@ -1,9 +1,9 @@
 const Cliente = require('../models/clientesModels');
 const Vendedor = require('../models/VendedorModels');
 const jwt = require('jsonwebtoken');
-const secretKey = 'chave_secreta_do_token';
+const secretKey = 'secretKey';
 const bcrypt = require('bcryptjs');
-const yup = require('yup');
+
 
 exports.cadastrarCliente = async (req, res) => {
   try {
@@ -126,48 +126,29 @@ exports.loginVendedor = async (req, res) => {
   }
 };
 
-    exports.validarToken = async (req, res) => {
+exports.validarToken = async (req, res) => {
   const { token } = req.body;
 
   if (!token) {
     return res.status(401).json({ message: 'Token de autenticação não fornecido.' });
   }
 
-  jwt.verify(token, secretKey, (err, decodedToken) => {
-    if (err) {
-      return res.status(401).json({ message: 'Token inválido' });
-    }
+  try {
+    const decodedToken = await jwt.verify(token, secretKey);
 
-    const { id, type } = decodedToken;
+    const { id } = decodedToken;
 
-    if (type === 'cliente') {
-      // Verifica se o token pertence a um cliente
-      Cliente.findById(id)
-        .then((cliente) => {
-          if (cliente) {
-            return res.status(200).json({ message: 'Token de cliente válido' });
-          } else {
-            return res.status(401).json({ message: 'Token inválido' });
-          }
-        })
-        .catch((error) => {
-          res.status(500).json({ message: error.message });
-        });
-    } else if (type === 'vendedor') {
-      // Verifica se o token pertence a um vendedor
-      Vendedor.findById(id)
-        .then((vendedor) => {
-          if (vendedor) {
-            return res.status(200).json({ message: 'Token de vendedor válido' });
-          } else {
-            return res.status(401).json({ message: 'Token inválido' });
-          }
-        })
-        .catch((error) => {
-          res.status(500).json({ message: error.message });
-        });
+    const cliente = await Cliente.findById(id);
+    const vendedor = await Vendedor.findById(id);
+
+    if (cliente) {
+      return res.status(200).json({ message: 'Token de cliente válido' });
+    } else if (vendedor) {
+      return res.status(200).json({ message: 'Token de vendedor válido' });
     } else {
       return res.status(401).json({ message: 'Token inválido' });
     }
-  });
+  } catch (error) {
+    return res.status(401).json({ message: 'Token inválido' });
+  }
 };

@@ -41,7 +41,7 @@ router.put('/pedidos/:id', atualizarStatusPedido);
 
 // Rota para controlar o estoque de uma peça
 
-router.get('/estoque', pecasController.getEstoque);
+router.get('/estoque/:id', controlarEstoque); //altera estoque
 
 // Rota para visualizar os relatórios
 router.get('/relatorios', visualizarRelatorios);
