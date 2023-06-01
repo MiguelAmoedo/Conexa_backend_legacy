@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const MovimentacaoEstoque = require('./transacaoModels');
 mongoose.connect('mongodb://127.0.0.1/Autoconnectxs', { useNewUrlParser: true });
 
 const Schema = mongoose.Schema;

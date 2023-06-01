@@ -49,6 +49,10 @@ exports.adicionarItemCarrinho = async (req, res) => {
       compraEmAndamento.itens.push(itemCompra);
     }
 
+    if (!cliente.carrinho) {
+      cliente.carrinho = [];
+    }
+
     cliente.carrinho.push(itemCompra);
     await cliente.save();
 
@@ -145,6 +149,10 @@ exports.removerItemCarrinho = async (req, res) => {
       return res.status(404).json({ message: 'Usuário não encontrado' });
     }
 
+    if (!cliente.carrinho || !Array.isArray(cliente.carrinho)) {
+      return res.status(400).json({ message: 'Carrinho inválido' });
+    }
+
     const itemIndex = cliente.carrinho.findIndex((item) => item.id === itemId);
     if (itemIndex === -1) {
       return res.status(404).json({ message: 'Item não encontrado no carrinho' });
@@ -159,6 +167,9 @@ exports.removerItemCarrinho = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+
 
 exports.obterDetalhesCompra = async (req, res) => {
   try {
@@ -197,6 +208,35 @@ exports.getAllCompras = async (req, res) => {
       totalCompras,
       compras: comprasRestantes
     });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.pesquisarPecas = async (req, res) => {
+  try {
+    const { keyword, maxPrice, location } = req.query;
+
+    const filter = {};
+
+    if (keyword) {
+      filter.$or = [
+        { nome: { $regex: keyword, $options: 'i' } },
+        { descricao: { $regex: keyword, $options: 'i' } }
+      ];
+    }
+
+    if (maxPrice) {
+      filter.preco = { $lte: parseInt(maxPrice) };
+    }
+
+    if (location) {
+      filter.localizacao = { $regex: location, $options: 'i' };
+    }
+
+    const pecas = await Peca.find(filter);
+
+    res.status(200).json(pecas);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

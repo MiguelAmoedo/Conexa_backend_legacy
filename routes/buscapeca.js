@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const buscaPecasController = require('../controllers/BuscaPecasController');
+const buscaPeca = require('../controllers/BuscaPecasController');
 
-router.get('/', buscaPecasController.buscarPecas);
+router.get('/', buscaPeca.buscaPeca);
 
 module.exports = router;

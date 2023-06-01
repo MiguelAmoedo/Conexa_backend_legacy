@@ -1,27 +1,29 @@
-const BuscaPeca = require('../models/BuscaPeca');
+const Peca = require('../models/PecasModels'); 
 
-// Controlador para filtrar e buscar peças
-async function buscarPecas(req, res) {
-  try {
-    const { marca, ano, modelo, parteVeiculo } = req.query;
+exports.buscaPeca = async (req, res) => {
+  const { ano, modelo, marca } = req.query;
 
-    // Construir o filtro de busca
-    const filtro = {
-      marca: { $regex: marca, $options: 'i' },
-      ano: parseInt(ano),
-      modelo: { $regex: modelo, $options: 'i' },
-      partesVeiculo: parteVeiculo
-    };
-
-    // Buscar as peças com base no filtro
-    const pecasEncontradas = await BuscaPeca.find(filtro);
-
-    res.json(pecasEncontradas);
-  } catch (error) {
-    res.status(500).json({ error: 'Ocorreu um erro ao buscar as peças.' });
+  // Validação dos parâmetros de entrada
+  if (!ano || !modelo || !marca) {
+    return res.status(400).json({ error: 'Parâmetros de entrada inválidos.' });
   }
-}
 
-module.exports = {
-  buscarPecas
+  if (isNaN(ano)) {
+    return res.status(400).json({ error: 'O ano deve ser um valor numérico.' });
+  }
+
+  // Conversão do ano para número
+  const anoNumber = parseInt(ano);
+
+  try {
+    // Consulta de peças compatíveis com os filtros informados
+    const pecas = await Peca.find({ ano: anoNumber, modelo, marca });
+
+    return res.json(pecas);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: 'Erro ao buscar as peças.' });
+  }
 };
+
+
