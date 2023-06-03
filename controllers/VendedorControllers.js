@@ -4,6 +4,25 @@ const Vendedor = require('../models/VendedorModels');
 const Peca = require('../models/PecasModels');
 const secretKey = 'secretKey';
 
+
+
+
+const getVendedorById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const vendedor = await Vendedor.findById(id);
+
+    if (!vendedor) {
+      return res.status(404).json({ error: 'Vendedor não encontrado' });
+    }
+
+    res.json(vendedor);
+  } catch (error) {
+    console.log('Erro ao buscar vendedor por ID:', error);
+    res.status(500).json({ error: 'Erro ao buscar vendedor por ID' });
+  }
+};
+
 // Função para validar o token do vendedor
 const validarToken = (req, res, next) => {
   const token = req.headers.authorization;
@@ -328,6 +347,7 @@ module.exports = {
   visualizarInformacoesPessoais,
   atualizarInformacoesPessoais,
   alterarSenha,
-  getVendedorPecas
+  getVendedorPecas,
+  getVendedorById
   // Outros controllers relacionados às instruções fornecidas
 };
