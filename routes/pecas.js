@@ -9,13 +9,16 @@ const {
   updatePeca,
   deletePeca,
   relatoriosPecas,
-  getEstoque
+  getEstoque,
+  getPecas
 
 
 } = require('../controllers/PecasControllers');
 
 // Rota para obter todas as peças
 router.get('/', getAllPecas);
+
+router.get('/pecas', getPecas);
 
 // Rota para obter uma peça por ID
 router.get('/:id', getPecaById);

@@ -13,7 +13,7 @@ exports.adicionarItemCarrinho = async (req, res) => {
     }
 
     const peca = await Peca.findById(pecaId);
-    if (!peca) {
+    if (!peca) { 
       return res.status(404).json({ message: 'Peça não encontrada' });
     }
 

@@ -2,6 +2,19 @@
 const Peca = require('../models/PecasModels');
 const Vendedor = require('../models/VendedorModels');
 
+exports.getPecas = async (req, res) => {
+  const { marca, modelo, ano } = req.query;
+
+  try {
+    // Consulte o banco de dados para buscar as peças com os critérios de filtro
+    const pecas = await Peca.find({ marca, modelo, ano });
+
+    res.json(pecas);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erro ao buscar as peças.' });
+  }
+};
 
 
 exports.getAllPecas = async (req, res) => {

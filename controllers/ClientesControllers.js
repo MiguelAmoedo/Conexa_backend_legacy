@@ -5,6 +5,27 @@ const { generateToken } = require('../auth/auth');
 
 
 
+exports.getAllClientes = async (req, res) => {
+  try {
+    const clientes = await Cliente.find();
+    res.status(200).json(clientes);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.getClienteById = async (req, res) => {
+  try {
+    const cliente = await Cliente.findById(req.params.id);
+    if (!cliente) {
+      return res.status(404).json({ message: 'Cliente não encontrado' });
+    }
+    res.status(200).json(cliente);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
 exports.loginCliente = async (req, res) => {
   try {
     const { email, senha } = req.body;
