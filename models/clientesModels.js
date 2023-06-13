@@ -25,10 +25,6 @@ const ClienteSchema = new Schema({
   senha: {
     type: String,
     required: true,
-    validate: {
-      validator: (value) => yup.string().required().min(6).max(20).isValidSync(value),
-      message: 'O campo senha é obrigatório e deve ter entre 6 e 20 caracteres.'
-    },
   },
   cpf: {
     type: String,

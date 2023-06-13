@@ -1,20 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const {
- 
-  loginCliente,
-  updateCliente,
-  deleteCliente,
-} = require('../controllers/ClientesControllers');
+const clienteController = require('../controllers/ClientesControllers');
+const { validarToken } = require('../auth/auth');
 
+router.use(clienteController.validarToken);
+// Rota para obter todos os clientes
+router.get('/',  clienteController.getAllClientes);
 
-// Rota para fazer login de um cliente
-router.post('/login', loginCliente);
+// Rota para obter um cliente por ID
+router.get('/:id',  clienteController.getClienteById);
 
-// Rota para atualizar os dados de um cliente
-router.put('/:id', updateCliente);
+// Rota para atualizar um cliente
+router.put('/:id',  clienteController.updateCliente);
 
 // Rota para excluir um cliente
-router.delete('/:id', deleteCliente);
+router.delete('/:id',  clienteController.deleteCliente);
 
 module.exports = router;

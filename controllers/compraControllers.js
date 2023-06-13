@@ -13,7 +13,7 @@ exports.adicionarItemCarrinho = async (req, res) => {
     }
 
     const peca = await Peca.findById(pecaId);
-    if (!peca) { 
+    if (!peca) {
       return res.status(404).json({ message: 'Peça não encontrada' });
     }
 
@@ -61,12 +61,15 @@ exports.adicionarItemCarrinho = async (req, res) => {
     res.status(201).json(compraEmAndamento);
   } catch (error) {
     if (error.name === 'ValidationError') {
-      return res.status(400).json({ message: error.message });
+      let errorMessage = 'Erro de validação:';
+      for (let field in error.errors) {
+        errorMessage += ` ${error.errors[field].message}`;
+      }
+      return res.status(400).json({ message: errorMessage });
     }
     res.status(500).json({ message: error.message });
   }
 };
-
 
 
 exports.finalizarCompra = async (req, res) => {

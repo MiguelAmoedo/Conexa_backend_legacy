@@ -2,6 +2,25 @@ const Cliente = require('../models/clientesModels');
 const Joi = require('joi');
 const bcrypt = require('bcryptjs');
 const { generateToken } = require('../auth/auth');
+const jwt = require('jsonwebtoken');
+
+// Função para validar o token do cliente
+exports.validarToken = (req, res, next) => {
+  const token = req.headers.authorization;
+
+  if (!token) {
+    return res.status(401).json({ error: 'Token não fornecido.' });
+  }
+
+  jwt.verify(token, 'secretKey', (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ error: 'Token inválido.' });
+    }
+    
+    req.clienteId = decoded.id;
+    next();
+  });
+};
 
 
 
@@ -26,29 +45,6 @@ exports.getClienteById = async (req, res) => {
   }
 };
 
-exports.loginCliente = async (req, res) => {
-  try {
-    const { email, senha } = req.body;
-
-    // Verificar se o cliente existe no banco de dados
-    const cliente = await Cliente.findOne({ email });
-    if (!cliente) {
-      return res.status(401).json({ message: 'Credenciais inválidas' });
-    }
-
-    // Verificar se a senha está correta
-    const isPasswordValid = await bcrypt.compare(senha, cliente.senha);
-    if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Credenciais inválidas' });
-    }
-
-    // Gerar e retornar o token JWT
-    const token = generateToken({ id: cliente._id });
-    res.status(200).json({ token });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
 
 exports.updateCliente = async (req, res) => {
   try {
@@ -66,7 +62,7 @@ exports.updateCliente = async (req, res) => {
     }
 
     // Verificar se o cliente atual está autenticado
-    if (cliente._id.toString() !== req.user._id.toString()) {
+    if (cliente._id.toString() !== req.clienteId.toString()) {
       return res.status(401).json({ message: 'Acesso não autorizado' });
     }
 
@@ -98,7 +94,7 @@ exports.deleteCliente = async (req, res) => {
     }
 
     // Verificar se o cliente atual está autenticado
-    if (cliente._id.toString() !== req.user._id.toString()) {
+    if (cliente._id.toString() !== req.clienteId.toString()) {
       return res.status(401).json({ message: 'Acesso não autorizado' });
     }
 
