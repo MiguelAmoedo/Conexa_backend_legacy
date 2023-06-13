@@ -1,0 +1,301 @@
+[{
+  "_id": {
+    "$oid": "6488acdf6ad84918ce928902"
+  },
+  "nome": "Peca de nissan 1",
+  "tipoDePeca": "Motor",
+  "marca": "Nissan",
+  "modelo": "Versa",
+  "ano": 2023,
+  "descricao": "Peça de nissan 1",
+  "preco": 100,
+  "qtdEstoque": 101010,
+  "status": "Disponivel",
+  "idVendedor": {
+    "$oid": "6488aa01eb52088ef6ad91f4"
+  },
+  "partesVeiculo": [
+    "Motor e Componentes"
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488acec6ad84918ce928909"
+  },
+  "nome": "Peca de nissan 2",
+  "tipoDePeca": "Motor",
+  "marca": "Nissan",
+  "modelo": "Versa",
+  "ano": 2023,
+  "descricao": "Peça de nissan 1",
+  "preco": 100,
+  "qtdEstoque": 10,
+  "status": "Disponivel",
+  "idVendedor": {
+    "$oid": "6488aa01eb52088ef6ad91f4"
+  },
+  "partesVeiculo": [
+    "Motor e Componentes"
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488acf06ad84918ce92890c"
+  },
+  "nome": "Peca de nissan 3",
+  "tipoDePeca": "Motor",
+  "marca": "Nissan",
+  "modelo": "Versa",
+  "ano": 2023,
+  "descricao": "Peça de nissan 1",
+  "preco": 100,
+  "qtdEstoque": 101010,
+  "status": "Disponivel",
+  "idVendedor": {
+    "$oid": "6488aa01eb52088ef6ad91f4"
+  },
+  "partesVeiculo": [
+    "Motor e Componentes"
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488ad076ad84918ce928913"
+  },
+  "nome": "Peca de Jeep 1",
+  "tipoDePeca": "Motor",
+  "marca": "Jeep",
+  "modelo": "Renegate",
+  "ano": 2023,
+  "descricao": "Peça de nissan 1",
+  "preco": 100,
+  "qtdEstoque": 10,
+  "status": "Disponivel",
+  "idVendedor": {
+    "$oid": "6488aa01eb52088ef6ad91f4"
+  },
+  "partesVeiculo": [
+    "Motor e Componentes"
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488ad0b6ad84918ce928916"
+  },
+  "nome": "Peca de Jeep 2",
+  "tipoDePeca": "Motor",
+  "marca": "Jeep",
+  "modelo": "Renegate",
+  "ano": 2023,
+  "descricao": "Peça de nissan 1",
+  "preco": 100,
+  "qtdEstoque": 10,
+  "status": "Disponivel",
+  "idVendedor": {
+    "$oid": "6488aa01eb52088ef6ad91f4"
+  },
+  "partesVeiculo": [
+    "Motor e Componentes"
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488ad0d6ad84918ce928919"
+  },
+  "nome": "Peca de Jeep 3",
+  "tipoDePeca": "Motor",
+  "marca": "Jeep",
+  "modelo": "Renegate",
+  "ano": 2023,
+  "descricao": "Peça de nissan 1",
+  "preco": 100,
+  "qtdEstoque": 10,
+  "status": "Disponivel",
+  "idVendedor": {
+    "$oid": "6488aa01eb52088ef6ad91f4"
+  },
+  "partesVeiculo": [
+    "Motor e Componentes"
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488ad446ad84918ce92891c"
+  },
+  "nome": "Peca de Hyundai 1",
+  "tipoDePeca": "Rodas",
+  "marca": "Hyundai",
+  "modelo": "HB20",
+  "ano": 2023,
+  "descricao": "Peça de nissan 1",
+  "preco": 100,
+  "qtdEstoque": 10,
+  "status": "Disponivel",
+  "idVendedor": {
+    "$oid": "6488aa01eb52088ef6ad91f4"
+  },
+  "partesVeiculo": [
+    "Motor e Componentes"
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488ad476ad84918ce92891f"
+  },
+  "nome": "Peca de Hyundai 2",
+  "tipoDePeca": "Rodas",
+  "marca": "Hyundai",
+  "modelo": "HB20",
+  "ano": 2023,
+  "descricao": "Peça de nissan 1",
+  "preco": 100,
+  "qtdEstoque": 10,
+  "status": "Disponivel",
+  "idVendedor": {
+    "$oid": "6488aa01eb52088ef6ad91f4"
+  },
+  "partesVeiculo": [
+    "Motor e Componentes"
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488ad4b6ad84918ce928922"
+  },
+  "nome": "Peca de Hyundai 3",
+  "tipoDePeca": "Rodas",
+  "marca": "Hyundai",
+  "modelo": "HB20",
+  "ano": 2023,
+  "descricao": "Peça de nissan 1",
+  "preco": 100,
+  "qtdEstoque": 10,
+  "status": "Disponivel",
+  "idVendedor": {
+    "$oid": "6488aa01eb52088ef6ad91f4"
+  },
+  "partesVeiculo": [
+    "Motor e Componentes"
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488ad636ad84918ce928925"
+  },
+  "nome": "Peca de Toyota 1",
+  "tipoDePeca": "Rodas",
+  "marca": "Toyota",
+  "modelo": "Yaris",
+  "ano": 2023,
+  "descricao": "Peça de nissan 1",
+  "preco": 100,
+  "qtdEstoque": 10,
+  "status": "Disponivel",
+  "idVendedor": {
+    "$oid": "6488aa01eb52088ef6ad91f4"
+  },
+  "partesVeiculo": [
+    "Motor e Componentes"
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488ad686ad84918ce928928"
+  },
+  "nome": "Peca de Toyota 2",
+  "tipoDePeca": "Rodas",
+  "marca": "Toyota",
+  "modelo": "Yaris",
+  "ano": 2023,
+  "descricao": "Peça de nissan 1",
+  "preco": 100,
+  "qtdEstoque": 10,
+  "status": "Disponivel",
+  "idVendedor": {
+    "$oid": "6488aa01eb52088ef6ad91f4"
+  },
+  "partesVeiculo": [
+    "Motor e Componentes"
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488ad6b6ad84918ce92892b"
+  },
+  "nome": "Peca de Toyota 3",
+  "tipoDePeca": "Rodas",
+  "marca": "Toyota",
+  "modelo": "Yaris",
+  "ano": 2023,
+  "descricao": "Peça de nissan 1",
+  "preco": 100,
+  "qtdEstoque": 10,
+  "status": "Disponivel",
+  "idVendedor": {
+    "$oid": "6488aa01eb52088ef6ad91f4"
+  },
+  "partesVeiculo": [
+    "Motor e Componentes"
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488ada56ad84918ce92892f"
+  },
+  "nome": "Peca de Toyota 1",
+  "tipoDePeca": "Rodas",
+  "marca": "Toyota",
+  "modelo": "Yaris",
+  "ano": 2023,
+  "descricao": "Peça de nissan 1",
+  "preco": 100,
+  "qtdEstoque": 101010,
+  "status": "Disponivel",
+  "idVendedor": {
+    "$oid": "6488aa1aeb52088ef6ad91f7"
+  },
+  "partesVeiculo": [
+    "Motor e Componentes"
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488adaf6ad84918ce928932"
+  },
+  "nome": "Peca de Toyota 2",
+  "tipoDePeca": "Rodas",
+  "marca": "Toyota",
+  "modelo": "Yaris",
+  "ano": 2023,
+  "descricao": "Peça de nissan 2",
+  "preco": 100,
+  "qtdEstoque": 10,
+  "status": "Disponivel",
+  "idVendedor": {
+    "$oid": "6488aa1aeb52088ef6ad91f7"
+  },
+  "partesVeiculo": [
+    "Motor e Componentes"
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488adb96ad84918ce928935"
+  },
+  "nome": "Peca de Toyota 3",
+  "tipoDePeca": "Rodas",
+  "marca": "Toyota",
+  "modelo": "Yaris",
+  "ano": 2023,
+  "descricao": "Peça de nissan 3",
+  "preco": 100,
+  "qtdEstoque": 1010,
+  "status": "Disponivel",
+  "idVendedor": {
+    "$oid": "6488aa1aeb52088ef6ad91f7"
+  },
+  "partesVeiculo": [
+    "Motor e Componentes"
+  ],
+  "__v": 0
+}]

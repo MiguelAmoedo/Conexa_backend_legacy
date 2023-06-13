@@ -1,0 +1,141 @@
+[{
+  "_id": {
+    "$oid": "6488a8a7eb52088ef6ad91d0"
+  },
+  "nome": "cliente1",
+  "email": "email@email.com",
+  "senha": "$2a$10$Uap1jL2jvpz2vUhKTj36neKmLc8swEMNx3EQEd9AJe1tiPvJBQj2u",
+  "cpf": "00000000001",
+  "endereco": "rua 1",
+  "telefone": "92992087321",
+  "dataCadastro": {
+    "$date": "2023-06-13T17:33:41.113Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488a8b9eb52088ef6ad91d3"
+  },
+  "nome": "cliente2",
+  "email": "email1@email.com",
+  "senha": "$2a$10$U8Dj.r94m2ORGzXlXIothe2LKZ9MI5P.r4XgV8ey6ntYGPq1dy9AG",
+  "cpf": "00000000002",
+  "endereco": "rua 1",
+  "telefone": "92992087322",
+  "dataCadastro": {
+    "$date": "2023-06-13T17:33:41.113Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488a8c5eb52088ef6ad91d6"
+  },
+  "nome": "cliente3",
+  "email": "email2@email.com",
+  "senha": "$2a$10$28Hz7m2WNVww1NX93Q7cHuMgheFTKwfDwU/2Be96aLXyXvdKJ75lm",
+  "cpf": "00000000003",
+  "endereco": "rua 1",
+  "telefone": "92992087323",
+  "dataCadastro": {
+    "$date": "2023-06-13T17:33:41.113Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488a8d0eb52088ef6ad91d9"
+  },
+  "nome": "cliente4",
+  "email": "email3@email.com",
+  "senha": "$2a$10$MAp0JIA7SlEhYDhOOhvZl.4w3RS3NtveUk9DogWl7whhBWW/y46RK",
+  "cpf": "00000000004",
+  "endereco": "rua 1",
+  "telefone": "92992087324",
+  "dataCadastro": {
+    "$date": "2023-06-13T17:33:41.113Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488a8dbeb52088ef6ad91dc"
+  },
+  "nome": "cliente5",
+  "email": "email4@email.com",
+  "senha": "$2a$10$73PcPczEQrCmY7pop5egre0Hy9O0pu/IxSNluTA5sdFU01.sNx7im",
+  "cpf": "00000000005",
+  "endereco": "rua 1",
+  "telefone": "92992087325",
+  "dataCadastro": {
+    "$date": "2023-06-13T17:33:41.113Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488a8e7eb52088ef6ad91df"
+  },
+  "nome": "cliente6",
+  "email": "email5@email.com",
+  "senha": "$2a$10$sN7SL2LzaB/yaa7MCRx5nOnUtz3Ce9.hDaNz.09wf6eDfjDfR55GO",
+  "cpf": "00000000006",
+  "endereco": "rua 1",
+  "telefone": "92992087326",
+  "dataCadastro": {
+    "$date": "2023-06-13T17:33:41.113Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488a900eb52088ef6ad91e5"
+  },
+  "nome": "cliente7",
+  "email": "email6@email.com",
+  "senha": "$2a$10$/9DJx4b/viST4mLGfvSSuuFeoR6FFW.2HQ9XCR5euhMHasJ8C9FpW",
+  "cpf": "00000000007",
+  "endereco": "rua 1",
+  "telefone": "92992087327",
+  "dataCadastro": {
+    "$date": "2023-06-13T17:33:41.113Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488a91feb52088ef6ad91e8"
+  },
+  "nome": "cliente8",
+  "email": "email7@email.com",
+  "senha": "$2a$10$q/zBtcy7fqaYv.No7q2FS.gfNuRq52kgl81kQwXKvN1D1zoSy6v9W",
+  "cpf": "00000000008",
+  "endereco": "rua 1",
+  "telefone": "92992087328",
+  "dataCadastro": {
+    "$date": "2023-06-13T17:33:41.113Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488a92deb52088ef6ad91eb"
+  },
+  "nome": "cliente9",
+  "email": "email8@email.com",
+  "senha": "$2a$10$5Y0k7eCJ6PZSNPZFge7RLu0ESJHb4QcE9O4vIrSdKShg3ZR/bzTYO",
+  "cpf": "00000000009",
+  "endereco": "rua 1",
+  "telefone": "92992087329",
+  "dataCadastro": {
+    "$date": "2023-06-13T17:33:41.113Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488a94beb52088ef6ad91ef"
+  },
+  "nome": "cliente10",
+  "email": "email9@email.com",
+  "senha": "$2a$10$kI8ESkkm3sWpZJpdLPg0fOgZw.eqrTU2jnq9ciFidKoStE4jKVXWi",
+  "cpf": "00000000010",
+  "endereco": "rua 1",
+  "telefone": "92992087310",
+  "dataCadastro": {
+    "$date": "2023-06-13T17:33:41.113Z"
+  },
+  "__v": 0
+}]
