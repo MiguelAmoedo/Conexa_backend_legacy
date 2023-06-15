@@ -61,6 +61,11 @@ const ClienteSchema = new Schema({
   },
   numeroSeguranca: {
     type: String
+  },
+
+  carrinho: {
+    type: Schema.Types.ObjectId,
+    ref: 'Compra',
   }
 });
 

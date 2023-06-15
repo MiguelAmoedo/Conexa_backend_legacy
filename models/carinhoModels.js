@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
-const { Schema } = mongoose;
+const Schema = mongoose.Schema;
 
-const compraSchema = new Schema({
+const carrinhoSchema = new Schema({
   cliente: {
     type: Schema.Types.ObjectId,
     ref: 'Cliente',
@@ -22,18 +22,13 @@ const compraSchema = new Schema({
       type: Number,
       required: true,
     },
+    precoTotal: {
+      type: Number,
+      required: true,
+    },
   }],
-  status: {
-    type: String,
-    enum: ['Em andamento', 'Concluída', 'Cancelada'],
-    default: 'Em andamento',
-  },
-  dataCompra: {
-    type: Date,
-    default: Date.now(),
-  },
 });
 
-const Compra = mongoose.model('Compra', compraSchema);
+const Carrinho = mongoose.model('carrinho', carrinhoSchema);
 
-module.exports = Compra;
+module.exports = Carrinho;
