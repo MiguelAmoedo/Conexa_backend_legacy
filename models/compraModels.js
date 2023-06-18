@@ -34,6 +34,11 @@ const compraSchema = new Schema({
   },
 });
 
+compraSchema.methods.finalizarCompra = async function () {
+  this.status = 'Concluída';
+  await this.save();
+};
+
 const Compra = mongoose.model('Compra', compraSchema);
 
 module.exports = Compra;

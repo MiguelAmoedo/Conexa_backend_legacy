@@ -7,8 +7,8 @@ const clienteId = require('../models/clientesModels');
 // Rota para adicionar um item ao carrinho de compras
 router.post('/carrinho', CompraController.adicionarItemCarrinho);
 
-// Rota para remover um item do carrinho de compras
-router.delete('/carrinho/:itemId', CompraController.removerItemCarrinho);
+// Rota para remover uma peça do carrinho
+router.delete('/carrinho/:pecaId', CompraController.removerItemCarrinho);
 
 // Rota para finalizar a compra
 router.post('/finalizar/:clienteId', CompraController.finalizarCompra);
@@ -17,7 +17,7 @@ router.post('/finalizar/:clienteId', CompraController.finalizarCompra);
 router.post('/carrinhoget', CompraController.getCarrinhos);
 
 // Rota para GET one carrinho
-router.post('/carrinhoget/:clienteId', CompraController.getCarrinhoDoClienteLogado);
+router.get('/carrinhoget/:clienteId', CompraController.getCarrinhoDoCliente);
 
 // Rota para obter os detalhes de uma compra
 router.get('/:compraId', CompraController.obterDetalhesCompra);

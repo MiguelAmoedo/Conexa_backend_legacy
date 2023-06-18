@@ -96,9 +96,9 @@ exports.getCarrinhos = async (req, res) => {
 };
 
 
-exports.getCarrinhoDoClienteLogado = async (req, res) => {
+exports.getCarrinhoDoCliente = async (req, res) => {
   try {
-    const clienteId = req.clienteId; // ID do cliente logado
+    const clienteId = req.params.clienteId; // ID do cliente
 
     // Verificar se o cliente existe no banco de dados
     const cliente = await Cliente.findById(clienteId);
@@ -106,10 +106,14 @@ exports.getCarrinhoDoClienteLogado = async (req, res) => {
       return res.status(404).json({ message: 'Cliente não encontrado' });
     }
 
-    // Buscar o carrinho de compras do cliente logado
+    // Buscar o carrinho de compras do cliente pelo ID do cliente
     const carrinho = await Carrinho.findOne({ cliente: clienteId }).populate('itens.peca');
     if (!carrinho) {
       return res.status(404).json({ message: 'Carrinho de compras não encontrado' });
+    }
+
+    if (carrinho.itens.length === 0) {
+      return res.status(200).json({ message: 'Seu carrinho está vazio' });
     }
 
     res.status(200).json(carrinho);
@@ -117,6 +121,8 @@ exports.getCarrinhoDoClienteLogado = async (req, res) => {
     res.status(500).json({ message: 'Ocorreu um erro ao recuperar o carrinho de compras do cliente' });
   }
 };
+
+
 
 exports.finalizarCompra = async (req, res) => {
   try {
@@ -150,13 +156,18 @@ exports.finalizarCompra = async (req, res) => {
 
     // Atualize as quantidades no estoque das peças
     const promises = carrinho.itens.map(async (item) => {
-      const peca = await Peca.findOneAndUpdate(
-        { _id: item.peca },
-        { $inc: { qtdEstoque: -item.quantidade } },
-        { new: true }
-      );
-      if (!peca) {
-        throw new Error('Peça não encontrada.');
+      try {
+        const peca = await Peca.findOneAndUpdate(
+          { _id: item.peca },
+          { $inc: { qtdEstoque: -item.quantidade } },
+          { new: true }
+        );
+        if (!peca) {
+          throw new Error('Peça não encontrada.');
+        }
+      } catch (error) {
+        console.error(error);
+        throw error;
       }
     });
 
@@ -172,14 +183,19 @@ exports.finalizarCompra = async (req, res) => {
 
     // Obtenha os nomes e valores das peças
     const itensCompra = compraEmAndamento.itens.map(async (item) => {
-      const peca = await Peca.findById(item.peca);
-      if (!peca) {
-        throw new Error('Peça não encontrada.');
+      try {
+        const peca = await Peca.findById(item.peca);
+        if (!peca) {
+          throw new Error('Peça não encontrada.');
+        }
+        return {
+          nomePeca: peca.nome,
+          precoPeca: peca.preco,
+        };
+      } catch (error) {
+        console.error(error);
+        throw error;
       }
-      return {
-        nomePeca: peca.nome,
-        precoPeca: peca.preco,
-      };
     });
 
     // Aguarde a obtenção dos nomes e valores das peças
@@ -196,72 +212,76 @@ exports.finalizarCompra = async (req, res) => {
 };
 
 
-
   
 exports.cancelarCompra = async (req, res) => {
-    try {
-        const { compraId } = req.params;
-    
-        // Verifica se a compra existe
-        const compra = await Compra.findById(compraId);
-        if (!compra) {
-          return res.status(404).json({ message: 'Compra não encontrada' });
-        }
-    
-        // Verifica se a compra já foi finalizada
-        if (compra.status !== 'Em andamento') {
-          return res.status(400).json({ message: 'A compra já foi finalizada ou cancelada' });
-        }
-    
-        // Restaura a quantidade em estoque das peças da compra
-        const itensCompra = compra.itens;
-        for (const item of itensCompra) {
-          const peca = await Peca.findById(item.peca);
-          if (peca) {
-            peca.qtdEstoque += item.quantidade;
-            await peca.save();
-          }
-        }
-    
-        // Atualiza o status da compra para 'Cancelada'
-        compra.status = 'Cancelada';
-        await compra.save();
-    
-        res.status(200).json(compra);
-      } catch (error) {
-        res.status(500).json({ message: error.message });
+  try {
+    const { compraId } = req.params;
+
+    // Verifica se a compra existe
+    const compra = await Compra.findById(compraId);
+    if (!compra) {
+      return res.status(404).json({ message: 'Compra não encontrada' });
+    }
+
+    // Verifica se a compra já foi finalizada
+    if (compra.status !== 'Em andamento') {
+      return res.status(400).json({ message: 'A compra já foi finalizada ou cancelada' });
+    }
+
+    // Restaura a quantidade em estoque das peças da compra
+    const itensCompra = compra.itens;
+    for (const item of itensCompra) {
+      const peca = await Peca.findById(item.peca);
+      if (peca) {
+        peca.qtdEstoque += item.quantidade;
+        await peca.save();
       }
-    };
+    }
+
+    // Atualiza o status da compra para 'Cancelada'
+    compra.status = 'Cancelada';
+    await compra.save();
+
+    return res.status(200).json(compra);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
     
-    exports.removerItemCarrinho = async (req, res) => {
-      try {
-        const { itemId } = req.params;
-        const { clienteId } = req.body;
+exports.removerItemCarrinho = async (req, res) => {
+  try {
+    const { pecaId } = req.params;
+    const { clienteId } = req.body;
+
+    // Verifica se o cliente existe
+    const cliente = await Cliente.findById(clienteId);
+    if (!cliente) {
+      return res.status(404).json({ message: 'Cliente não encontrado' });
+    }
+
+    // Encontra o item no carrinho do cliente pelo ID da peça
+    const itemIndex = cliente.itens.findIndex((item) => item.peca.toString() === pecaId);
+    if (itemIndex === -1) {
+      return res.status(404).json({ message: 'Item não encontrado no carrinho' });
+    }
+
+    // Remove o item do carrinho
+    cliente.itens.splice(itemIndex, 1);
+
+    // Salva as alterações no banco de dados
+    await cliente.save();
+
+    return res.json({ message: 'Item removido do carrinho com sucesso' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Ocorreu um erro ao remover o item do carrinho' });
+  }
+};
+
     
-        // Verifica se o cliente existe
-        const cliente = await Cliente.findById(clienteId);
-        if (!cliente) {
-          return res.status(404).json({ message: 'Cliente não encontrado' });
-        }
     
-        // Verifica se o item está no carrinho do cliente
-        const itemIndex = cliente.carrinho.findIndex((item) => item.id === itemId);
-        if (itemIndex === -1) {
-          return res.status(404).json({ message: 'Item não encontrado no carrinho' });
-        }
-    
-        // Remove o item do carrinho
-        cliente.carrinho.splice(itemIndex, 1);
-    
-        // Salva as alterações no banco de dados
-        await cliente.save();
-    
-        return res.json({ message: 'Item removido do carrinho com sucesso' });
-      } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'Ocorreu um erro ao remover o item do carrinho' });
-      }
-    };
     
       
       exports.obterDetalhesCompra = async (req, res) => {

@@ -59,11 +59,16 @@ exports.loginCliente = async (req, res) => {
     // Gera o token de autenticação
     const token = jwt.sign({ id: cliente._id }, secretKey);
 
-    res.status(200).json({ message: 'Login do cliente bem-sucedido', token });
+    const clienteId = cliente._id.toString(); // Converte o ID para uma string
+
+    console.log('ID do cliente:', clienteId);
+
+    res.status(200).json({ message: 'Login do cliente bem-sucedido', token, clienteId });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 
 exports.cadastrarVendedor = async (req, res) => {

@@ -18,7 +18,7 @@ const {
 // Rota para obter todas as peças
 router.get('/', getAllPecas);
 
-router.get('/pecas', getPecas);
+router.get('/', getPecas);
 
 // Rota para obter uma peça por ID
 router.get('/:id', getPecaById);

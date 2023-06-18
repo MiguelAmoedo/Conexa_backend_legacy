@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const Vendedor = require('../models/VendedorModels');
 const Peca = require('../models/PecasModels');
+const Compra = require('../models/compraModels');
 const secretKey = 'secretKey';
 
 
@@ -332,6 +333,42 @@ const atualizarStatusPedido = async (req, res) => {
 
 
 
+const relatorioVendasVendedor = async (req, res) => {
+  try {
+    const vendedorId = req.vendedorId; // ID do vendedor logado
+
+    const vendas = await Compra.find({
+      'itens.peca': { $in: req.user.pecas }, // Filtra as compras que contenham peças do vendedor (acessível através do req.user)
+      status: 'Concluída', // Filtra as compras que estão concluídas
+    })
+      .populate('cliente', 'nome telefone')
+      .populate('itens.peca', 'nome modelo marca precoUnitario')
+      .lean();
+
+    const relatorio = vendas.map((venda) => {
+      return {
+        idCompra: venda._id, // ID da compra
+        dataCompra: venda.dataCompra, // Data da compra
+        idPeca: venda.itens[0].peca._id, // ID da peça vendida
+        idCliente: venda.cliente._id, // ID do cliente
+        nomeCliente: venda.cliente.nome, // Nome do cliente
+        telefoneCliente: venda.cliente.telefone, // Telefone do cliente
+
+        nomePeca: venda.itens[0].peca.nome, // Nome da peça
+        modeloPeca: venda.itens[0].peca.modelo, // Modelo da peça
+        marcaPeca: venda.itens[0].peca.marca, // Marca da peça
+        precoUnitario: venda.itens[0].precoUnitario, // Preço unitário da peça
+        precoTotal: venda.itens[0].precoUnitario * venda.itens[0].quantidade, // Preço total da venda
+      };
+    });
+
+    res.status(200).json(relatorio);
+  } catch (error) {
+    res.status(500).json({ error: 'Ocorreu um erro ao gerar o relatório de vendas.' });
+  }
+};
+
+
 // Outros controllers relacionados às instruções fornecidas
 
 module.exports = {
@@ -348,6 +385,7 @@ module.exports = {
   atualizarInformacoesPessoais,
   alterarSenha,
   getVendedorPecas,
-  getVendedorById
+  getVendedorById,
+  relatorioVendasVendedor
   // Outros controllers relacionados às instruções fornecidas
 };
