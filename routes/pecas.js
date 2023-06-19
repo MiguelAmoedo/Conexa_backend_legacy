@@ -8,9 +8,9 @@ const {
   createPeca,
   updatePeca,
   deletePeca,
-  relatoriosPecas,
-  getEstoque,
-  getPecas
+  getPecas,
+  advancedSearch,
+  getPecasVendidasByVendedorId
 
 
 } = require('../controllers/PecasControllers');
@@ -18,7 +18,12 @@ const {
 // Rota para obter todas as peças
 router.get('/', getAllPecas);
 
-router.get('/', getPecas);
+router.get('/pecas', getPecas);
+
+router.get('/pecas-vendidas/:vendedorId', getPecasVendidasByVendedorId);
+
+//pesquisa automatica
+router.get('/pesquisa', advancedSearch);
 
 // Rota para obter uma peça por ID
 router.get('/:id', getPecaById);
@@ -32,9 +37,6 @@ router.put('/:id', updatePeca);
 // Rota para excluir uma peça existente
 router.delete('/:id', deletePeca);
 
-// Rota para gerar relatórios de peças
-router.get('/relatorios', relatoriosPecas);
 
-router.get('/estoque', getEstoque);
 
 module.exports = router;

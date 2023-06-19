@@ -191,49 +191,6 @@ const excluirPeca = async (req, res) => {
   }
 };
 
-const controlarEstoque = async (req, res) => {
-  try {
-    const vendedorId = req.vendedorId;
-    const pecaId = req.params.id;
-    const { qtdEstoque } = req.body;
-
-    const peca = await Peca.findById(pecaId);
-    if (!peca) {
-      return res.status(404).json({ message: 'Peça não encontrada' });
-    }
-
-    if (peca.idVendedor.toString() !== vendedorId) {
-      return res.status(403).json({ message: 'Acesso não autorizado' });
-    }
-
-    peca.qtdEstoque = qtdEstoque;
-    const pecaAtualizada = await peca.save();
-    res.status(200).json(pecaAtualizada);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
-
-const visualizarRelatorios = async (req, res) => {
-  try {
-    const vendedorId = req.vendedorId;
-
-    const pecas = await Peca.find({ idVendedor: vendedorId });
-
-    // Lógica para gerar os relatórios e estatísticas
-    // Adaptar de acordo com as necessidades específicas
-    const relatorios = {
-      totalVendas: 0,
-      totalPedidos: 0,
-      estoque: pecas.length
-    };
-
-    res.status(200).json(relatorios);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
-
 const visualizarInformacoesPessoais = async (req, res) => {
   try {
     const vendedorId = req.vendedorId;
@@ -296,41 +253,6 @@ const alterarSenha = async (req, res) => {
 };
 
 
-const visualizarPedidos = async (req, res) => {
-  try {
-    const vendedorId = req.vendedorId; // ID do vendedor logado
-
-    const pedidos = await Pedido.find({ idVendedor: vendedorId });
-    res.status(200).json(pedidos);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
-
-const atualizarStatusPedido = async (req, res) => {
-  try {
-    const vendedorId = req.vendedorId; // ID do vendedor logado
-    const pedidoId = req.params.id; // ID do pedido a ser atualizado
-    const { status } = req.body;
-
-    const pedido = await Pedido.findById(pedidoId);
-    if (!pedido) {
-      return res.status(404).json({ message: 'Pedido não encontrado' });
-    }
-
-    // Verificar se o vendedor é o dono do pedido
-    if (pedido.idVendedor.toString() !== vendedorId) {
-      return res.status(403).json({ message: 'Acesso não autorizado' });
-    }
-
-    pedido.status = status;
-    const pedidoAtualizado = await pedido.save();
-    res.status(200).json(pedidoAtualizado);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
-
 
 
 const relatorioVendasVendedor = async (req, res) => {
@@ -377,10 +299,6 @@ module.exports = {
   adicionarPeca,
   atualizarPeca,
   excluirPeca,
-  visualizarPedidos,
-  atualizarStatusPedido,
-  controlarEstoque,
-  visualizarRelatorios,
   visualizarInformacoesPessoais,
   atualizarInformacoesPessoais,
   alterarSenha,
