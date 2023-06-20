@@ -3,6 +3,14 @@ const yup = require('yup');
 
 mongoose.connect('mongodb://127.0.0.1/Autoconnectxs', { useNewUrlParser: true });
 
+const telefoneSchema = yup
+  .string()
+  .required('O telefone é obrigatório.')
+  .matches(
+    /^(55)(\d{2})(9\d{8})$/,
+    'Telefone inválido. Insira um número válido de telefone com código do país, DDD, número celular e formato de operadora (oi, tim, claro ou vivo).'
+  );
+
 const vendedorSchema = new mongoose.Schema({
   nome: {
     type: String,
@@ -49,11 +57,11 @@ const vendedorSchema = new mongoose.Schema({
     },
   },
   telefone: {
-    type: Number,
+    type: String,
     required: true,
     validate: {
       validator: (value) => {
-        return yup.string().required().isValidSync(value.toString());
+        return telefoneSchema.isValidSync(value);
       },
       message: 'O telefone é obrigatório.',
     },
