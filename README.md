@@ -63,9 +63,10 @@
     - Clientes
     - Vendedores
     - Pecas
+    - Admin
     - Carrinho
-    - Item carrinho
-    - Pedidos
+    - Compras
+    - Login
 
 </h3>
 
