@@ -28,5 +28,7 @@ router.put('/cancelar/:compraId', CompraController.cancelarCompra);
 // Rota para cancelar uma compra em andamento
 router.get('/', CompraController.getAllCompras);
 
+router.put('/gerenciar/:id' ,  CompraController.gerenciar)
+
 
 module.exports = router;
