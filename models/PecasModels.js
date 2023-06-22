@@ -95,11 +95,11 @@ const pecaSchema = new Schema({
     default:  'Chevrolet'
   },
   modelo: { type: String, required: true },
-  imagem: { type: String },
+  imagem: { type: String , require: true},
   ano: { type: String, required: true },
   descricao: { type: String, required: true },
   preco: { type: Number, required: true },
-  qtdEstoque: { type: Number, required: true, min: 0 },
+  qtdEstoque: { type: Number, required: true, min: 0},
   status: {
     type: String,
     enum: ['Disponivel', 'Vendida', 'Manutenção'],
