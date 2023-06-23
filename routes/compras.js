@@ -30,5 +30,6 @@ router.get('/', CompraController.getAllCompras);
 
 router.put('/gerenciar/:id' ,  CompraController.gerenciar)
 
+router.delete('/removerCarrinho/:id' ,  CompraController.removerCarrinho)
 
 module.exports = router;

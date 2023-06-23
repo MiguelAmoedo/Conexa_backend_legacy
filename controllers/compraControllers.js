@@ -389,3 +389,24 @@ exports.gerenciar = async (req, res) => {
     res.status(500).json({ mensagem: 'Erro ao atualizar o carrinho' });
   }
 };
+
+exports.removerCarrinho = async (req, res) => {
+  const { id } = req.params; // ID do cliente cujo carrinho será removido
+
+  try {
+    // Verificar se o carrinho existe para o cliente
+    const carrinho = await Carrinho.findOne({ cliente: id });
+    if (!carrinho) {
+      return res.status(404).json({ mensagem: 'Carrinho não encontrado' });
+    }
+
+    // Remover o carrinho
+    await carrinho.delete();
+
+    res.json({ mensagem: 'Carrinho removido com sucesso' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensagem: 'Erro ao remover o carrinho' });
+  }
+};
+

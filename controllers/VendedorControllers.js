@@ -70,7 +70,7 @@ const autenticarVendedor = async (req, res) => {
 
 // Controller para adicionar uma nova peça
 const adicionarPeca = async (req, res) => {
-  const { nome, tipoDePeca, imagem,  marca, modelo, ano, descricao, preco, qtdEstoque, partesVeiculo } = req.body;
+  const { nome, tipoDePeca, imagem,  marca, modelo, ano, descricao, preco, qtdEstoque, partesVeiculo, dataCadastro } = req.body;
 
   try {
     // Verificar se a peça já existe para o vendedor
@@ -99,6 +99,7 @@ const adicionarPeca = async (req, res) => {
         preco,
         qtdEstoque,
         partesVeiculo,
+        dataCadastro,
         idVendedor: req.vendedorId,
         status: 'Disponivel',
       });

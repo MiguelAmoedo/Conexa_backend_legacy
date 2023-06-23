@@ -124,6 +124,13 @@ const pecaSchema = new Schema({
       'Carroceria',
     ],
     required: true,
+    
+  },
+
+  dataCadastro: {
+    type: Date,
+    required: true,
+    default: Date.now,
   },
 });
 
