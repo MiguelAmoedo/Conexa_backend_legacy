@@ -1,0 +1,161 @@
+[{
+  "_id": {
+    "$oid": "6488aa01eb52088ef6ad91f4"
+  },
+  "nome": "vendor",
+  "email": "vendor@email.com",
+  "senha": "$2a$10$oPn8Vq5vcJObYiWYnB6uKebeQB2KGZ1Q5ukgkebDNfZrQZGaXfmi6",
+  "endereco": "rua 1",
+  "telefone": {
+    "$numberLong": "92992087301"
+  },
+  "status": "Ativo",
+  "dataCadastro": {
+    "$date": "2023-06-13T17:40:17.113Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488aa1aeb52088ef6ad91f7"
+  },
+  "nome": "vendor1",
+  "email": "vendor1@email.com",
+  "senha": "$2a$10$CxzMB3wsy10pA8KAqjFQ2.l.LCtdlWQLYuy.//hTaszcthtwEciZi",
+  "endereco": "rua 2",
+  "telefone": {
+    "$numberLong": "92992087301"
+  },
+  "status": "Ativo",
+  "dataCadastro": {
+    "$date": "2023-06-13T17:40:42.585Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488aa26eb52088ef6ad91fa"
+  },
+  "nome": "vendor2",
+  "email": "vendor2@email.com",
+  "senha": "$2a$10$Hn1SYq8l9.hjlaK1vfZip.nMox.ZqGK0In627z.w0Pkxog9XBJCz2",
+  "endereco": "rua 3",
+  "telefone": {
+    "$numberLong": "92992087301"
+  },
+  "status": "Ativo",
+  "dataCadastro": {
+    "$date": "2023-06-13T17:40:54.620Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488aa33eb52088ef6ad91fe"
+  },
+  "nome": "vendor3",
+  "email": "vendor3@email.com",
+  "senha": "$2a$10$MIRoU5hAc5YNITGSbxkSfOyvteH0jRvCqH9pwdSTF4NCIYL/86ATq",
+  "endereco": "rua 4",
+  "telefone": {
+    "$numberLong": "92992087301"
+  },
+  "status": "Ativo",
+  "dataCadastro": {
+    "$date": "2023-06-13T17:41:07.012Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488aa55eb52088ef6ad9201"
+  },
+  "nome": "vendor4",
+  "email": "vendor3@email.com4",
+  "senha": "$2a$10$nYUYS/LnIxOniHobWuoO7eTp6/rJMUimDi78dx24sqbyZpqGqalm6",
+  "endereco": "rua 5",
+  "telefone": {
+    "$numberLong": "92992087301"
+  },
+  "status": "Ativo",
+  "dataCadastro": {
+    "$date": "2023-06-13T17:41:41.074Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488aa75eb52088ef6ad9204"
+  },
+  "nome": "vendor6",
+  "email": "vendor3@email.com6",
+  "senha": "$2a$10$x/KukkiiKsWfewzPr/rjVeF3HhsIzP/EBl/3Dy5DpJZ0lnLCISqia",
+  "endereco": "rua 7",
+  "telefone": {
+    "$numberLong": "92992087301"
+  },
+  "status": "Ativo",
+  "dataCadastro": {
+    "$date": "2023-06-13T17:42:13.677Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488aa8feb52088ef6ad9207"
+  },
+  "nome": "vendor7",
+  "email": "vendor3@email.com7",
+  "senha": "$2a$10$rNvkpb4KlDTiGJ.pTayMh.3hj3xXAcoms.59CQXuU0Msmql5eAPTy",
+  "endereco": "rua 8",
+  "telefone": {
+    "$numberLong": "92992087301"
+  },
+  "status": "Ativo",
+  "dataCadastro": {
+    "$date": "2023-06-13T17:42:39.534Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488aaa3eb52088ef6ad920a"
+  },
+  "nome": "vendor8",
+  "email": "vendor3@email.com8",
+  "senha": "$2a$10$iTajtDLBInaKPWLwsUPm8e77ZS.7KELsiFcsABlt4Y26eamG5Hpxq",
+  "endereco": "rua 9",
+  "telefone": {
+    "$numberLong": "92992087301"
+  },
+  "status": "Ativo",
+  "dataCadastro": {
+    "$date": "2023-06-13T17:42:59.595Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488aac1eb52088ef6ad920d"
+  },
+  "nome": "vendor9",
+  "email": "vendor3@email.com9",
+  "senha": "$2a$10$xRzWifxFzJtT7Rl0phn6tuFtwoDLV1OMmex6Tgkly20GsF84CA6N2",
+  "endereco": "rua 10",
+  "telefone": {
+    "$numberLong": "92992087301"
+  },
+  "status": "Ativo",
+  "dataCadastro": {
+    "$date": "2023-06-13T17:43:29.774Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488aad4eb52088ef6ad9210"
+  },
+  "nome": "vendor10",
+  "email": "vendor3@email.com10",
+  "senha": "$2a$10$WAcwYLnW0Z45AOoMMrD09uxTskG90pqGt4Ad3bUiAV7hn6PBmQzuK",
+  "endereco": "rua 11",
+  "telefone": {
+    "$numberLong": "92992087301"
+  },
+  "status": "Ativo",
+  "dataCadastro": {
+    "$date": "2023-06-13T17:43:48.314Z"
+  },
+  "__v": 0
+}]

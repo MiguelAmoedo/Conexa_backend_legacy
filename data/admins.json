@@ -1,0 +1,25 @@
+[{
+  "_id": {
+    "$oid": "6488ab426ad84918ce9288ec"
+  },
+  "nome": "admin",
+  "email": "admin@autoconnectx.com",
+  "senha": "$2a$10$crXPZOxtHjdJvnDzsf5H0Ou7EiND0TZwNk2lVyl9QALHUBkPLfgUy",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488ab466ad84918ce9288ef"
+  },
+  "nome": "admin1",
+  "email": "admin1@autoconnectx.com",
+  "senha": "$2a$10$2gK1HZFqw1eGHSbxFvEBQuzIT0DJhROebS6VYuYBfVONu9mXLUJpy",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488ab4e6ad84918ce9288f2"
+  },
+  "nome": "admin2",
+  "email": "admin2@autoconnectx.com",
+  "senha": "$2a$10$PZpSqMJQTKo8FH5q.CPcfOsrLmjHK9T1NQYxuf41paKhyoFfzi7W6",
+  "__v": 0
+}]
