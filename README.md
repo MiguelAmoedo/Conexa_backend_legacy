@@ -4,17 +4,7 @@
 <br>
     Miguel Amoedo - Desenvolvedor Full Stack.
 <br>
-    Edevaldo Sousa - Gerente de projeto.
-<br>
-    Guilherme Campos - Desenvolvedor FrontEnd.
-<br>
-    Guilherme Menezes- Desenvolvedor FrontEnd.
-<br>
-    Samuel Ryan - Analista de Negócios.
-<br>
-    Wander junior - Analista de requisitos.
-<br>
-</h2>
+
 
 
 <h3>
